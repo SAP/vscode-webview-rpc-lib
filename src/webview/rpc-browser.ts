@@ -1,8 +1,7 @@
 import { RpcCommon } from "../rpc-common";
 
 export class RpcBrowser extends RpcCommon {
-
-  functions; // functions that can be called from the webview.
+  functions: Function[]; // functions that can be called from the webview.
   context: any;
 
   constructor(context: any, functions: any) {
@@ -34,7 +33,7 @@ export class RpcBrowser extends RpcCommon {
     });
   }
 
-  postMessage(id, method, params, res?) {
+  postMessage(id: number, method: string, params: any[], res?: any) {
     //@ts-ignore
     window.vscode.postMessage({
       command: 'rpc',

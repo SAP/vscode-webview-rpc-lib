@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { RpcCommon } from '../rpc-common';
 
 export class RpcExtenstion extends RpcCommon {
-  functions:Function[]; // functions that can be called from the webview.
+  functions: Function[]; // functions that can be called from the webview.
   context: vscode.WebviewPanel; //currentPanel (a vscode.WebviewPanel)
 
   constructor(context: any, functions: any) {
@@ -28,7 +28,7 @@ export class RpcExtenstion extends RpcCommon {
     });
   }
 
-  postMessage(id:number, method:string, params:any[], res?:any) {
+  postMessage(id: number, method: string, params: any[], res?: any) {
     this.context.webview.postMessage({
       command: 'rpc',
       id: id,
