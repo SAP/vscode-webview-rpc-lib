@@ -1,4 +1,5 @@
-import { RpcCommon } from "../rpc-common";
+console.log('bbbb');
+import { RpcCommon } from "../rpc-common.js";
 export class RpcBrowser extends RpcCommon {
     constructor(context, functions) {
         super();
@@ -39,4 +40,5 @@ export class RpcBrowser extends RpcCommon {
         }, '*');
     }
 }
+console.log('ccccc')
 //# sourceMappingURL=rpc-browser.js.map

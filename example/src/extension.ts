@@ -66,10 +66,7 @@ class RpcExamplePanel {
 			column || vscode.ViewColumn.One,
 			{
 				// Enable javascript in the webview
-				enableScripts: true,
-
-				// And restrict the webview to only loading content from our extension's `media` directory.
-				localResourceRoots: [vscode.Uri.file(path.join(extensionPath, 'media'))]
+				enableScripts: true
 			}
 		);
 
@@ -116,11 +113,6 @@ class RpcExamplePanel {
 		);
 	}
 
-	public doRefactor() {
-		// Send a message to the webview webview.
-		// You can send any JSON serializable data.
-		this._panel.webview.postMessage({ command: 'refactor' });
-	}
 
 	public dispose() {
 		RpcExamplePanel.currentPanel = undefined;
@@ -151,12 +143,12 @@ class RpcExamplePanel {
 		const scriptsUri = webview.asWebviewUri(scriptsPathOnDisk);
 		
 		let html = fs.readFileSync(path.join(this._extensionPath, 'media', 'index.html'), "utf8");
-
-		html = html.replace(/vscode-scheme/g, scriptsUri.path);
+		html = html.replace(/vscode-scheme/g, scriptsUri.toString()).replace(/%3A/g, ":");
 
 		return html;
 	}
 }
+
 
 
 // this method is called when your extension is deactivated

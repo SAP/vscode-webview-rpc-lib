@@ -12,7 +12,7 @@ class RpcExtenstion extends rpc_common_1.RpcCommon {
             if (message.command === 'rpc') {
                 if (this.callbacks[message.id]) {
                     this.callbacks[message.id](message.ret);
-                    this.callbacks[message.id] = undefined;
+                    delete this.callbacks[message.id];
                 }
                 else if (functions[message.method]) {
                     functions[message.method](vscode, message.params)
