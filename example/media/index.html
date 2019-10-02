@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        const vscode = acquireVsCodeApi();
+        window.vscode = vscode;
+    </script>
+    <script type="module" src="vscode-scheme/rpc-common.js"></script>
+    <script type="module" src="vscode-scheme/rpc-browser.js"></script>
+    <script type="module" src="vscode-scheme/editor.js"></script>
+</head>
+
+<body>
+        <h1>Webview Based Editor</h1>
+        <h2>Content Editor Sample</h2>
+        <textarea rows="4" cols="50" id="txtGetContent" contenteditable="false"></textarea>
+        <br>
+        <h2>API Integration Samples</h2>
+        <table>
+            <tr>
+                <th>Control</th>
+                <th>Result</th>
+            </tr>
+            <tr>
+                <td><a id="btnShowMessage" style="cursor: pointer" title="Show Message">Show Message</a></td>
+                <td><input aria-label="insert text" id="inptShowText" /></td>
+            </tr>
+            <tr>
+                <td><a id="btnShowError" style="cursor: pointer" title="Show Error">Show Error</a></td>
+                <td>
+                    <div id="devError" style="width:100px;height:20px;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><a id="btnShowPicker" style="cursor: pointer" title="Open Picker">Open Picker</a></td>
+                <td>
+                    <div id="divSelectedFromPicker" style="width:100px;height:20px;"></div>
+                </td>
+            </tr>
+        </table>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>The graphical editor can be enabled only when autosave is on.</p>
+            <button id="btnAutoSaveFile">Enable autosave for this file</button>
+            <button id="btnAutoSaveWorkspace">Enable autosave for workspace</button>
+            <button id="btnViewonly">Keep in view only mode</button>
+        </div>
+
+    </div>
+
+    <!-- The Modal -->
+    <div id="viewOnly" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+        </div>
+
+    </div>
+
+</body>
+
+</html>
