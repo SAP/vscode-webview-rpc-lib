@@ -3,7 +3,7 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { RpcExtenstion } from './extension/rpc-extension';
+import { RpcExtenstion } from './rpc/rpc-extension';
 import { SSL_OP_CIPHER_SERVER_PREFERENCE } from 'constants';
 
 // this method is called when your extension is activated
@@ -54,9 +54,9 @@ class RpcExamplePanel {
 	private _rpc: RpcExtenstion;
 
 	public static sendMessage() {
-		this.currentPanel._rpc.invoke("runFunctionInWebview", ["message from extension"], (content)=>{
-			vscode.window.showInformationMessage(content);
-		});
+		this.currentPanel._rpc.invoke("runFunctionInWebview", ["message from extension"]).then((response => {
+			vscode.window.showInformationMessage(response);
+		}));
 	}
 
 	public static createOrShow(extensionPath: string) {
@@ -101,17 +101,10 @@ class RpcExamplePanel {
 						resolve(res);
 					});
 				});
-			  },
-			
-			  setContext: (context: { currentPanel:any }) => {
-				this.context = context;
 			  }
 		};
-		this._rpc = new RpcExtenstion(this._panel, functions);
-
-		functions.setContext({
-			currentPanel: this._panel
-		  });
+		this._rpc = new RpcExtenstion(this._panel.webview);
+		this._rpc.registerMethod({ func: functions.showMessage });
 
 		// Set the webview's initial html content
 		this.update(this._panel.webview);
@@ -160,7 +153,7 @@ class RpcExamplePanel {
 		// And the uri we use to load this script in the webview
 		const scriptsUri = webview.asWebviewUri(scriptsPathOnDisk);
 
-		let html = fs.readFileSync(path.join(this._extensionPath, 'media', 'index.html'), "utf8");
+		let html = fs.readFileSync(path.join(this._extensionPath, 'out', 'media', 'index.html'), "utf8");
 		html = html.replace(/vscode-scheme/g, scriptsUri.toString()).replace(/%3A/g, ":");
 
 		return html;

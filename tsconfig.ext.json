@@ -8,5 +8,5 @@
 		"rootDir": "src",
 		"strict": true
 	},
-	"exclude": ["node_modules", "src/webview", "example"]
+	"exclude": ["node_modules", "src/rpc-browser.ts", "example"]
 }

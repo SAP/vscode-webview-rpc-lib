@@ -1,5 +1,7 @@
-import * as vscode from 'vscode';
-import { RpcCommon, IPromiseCallbacks } from '../rpc-common';
+// must specify ".js" for import in browser to locate rpc-common.js
+// see: https://github.com/microsoft/TypeScript/issues/16577#issuecomment-343610106
+
+import { RpcCommon, IPromiseCallbacks } from './rpc-common.js';
 
 export class RpcBrowser extends RpcCommon {
   window: Window;
@@ -25,12 +27,12 @@ export class RpcBrowser extends RpcCommon {
     setTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
-        promiseCallbacks.reject("Request timeouted out");
+        promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
       }
     }, this.timeout);
 
-    this.window.postMessage({
+    (this.window as any).vscode.postMessage({
       command: 'rpc-request',
       id: id,
       method: method,
@@ -39,7 +41,7 @@ export class RpcBrowser extends RpcCommon {
   }
 
   sendResponse(id: number, response: any, success: boolean = true): void {
-    this.window.postMessage({
+    (this.window as any).vscode.postMessage({
       command: 'rpc-response',
       id: id,
       response: response,

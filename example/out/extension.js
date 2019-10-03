@@ -14,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const vscode = require("vscode");
 const fs = require("fs");
-const rpc_extension_1 = require("./extension/rpc-extension");
+const rpc_extension_1 = require("./rpc/rpc-extension");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -55,15 +55,10 @@ class RpcExamplePanel {
                         resolve(res);
                     });
                 });
-            },
-            setContext: (context) => {
-                this.context = context;
             }
         };
-        this._rpc = new rpc_extension_1.RpcExtenstion(this._panel, functions);
-        functions.setContext({
-            currentPanel: this._panel
-        });
+        this._rpc = new rpc_extension_1.RpcExtenstion(this._panel.webview);
+        this._rpc.registerMethod({ func: functions.showMessage });
         // Set the webview's initial html content
         this.update(this._panel.webview);
         // Listen for when the panel is disposed
@@ -77,9 +72,9 @@ class RpcExamplePanel {
         }, null, this._disposables);
     }
     static sendMessage() {
-        this.currentPanel._rpc.invoke("runFunctionInWebview", ["message from extension"], (content) => {
-            vscode.window.showInformationMessage(content);
-        });
+        this.currentPanel._rpc.invoke("runFunctionInWebview", ["message from extension"]).then((response => {
+            vscode.window.showInformationMessage(response);
+        }));
     }
     static createOrShow(extensionPath) {
         const column = vscode.window.activeTextEditor
@@ -120,7 +115,7 @@ class RpcExamplePanel {
         const scriptsPathOnDisk = vscode.Uri.file(path.join(this._extensionPath, 'out'));
         // And the uri we use to load this script in the webview
         const scriptsUri = webview.asWebviewUri(scriptsPathOnDisk);
-        let html = fs.readFileSync(path.join(this._extensionPath, 'media', 'index.html'), "utf8");
+        let html = fs.readFileSync(path.join(this._extensionPath, 'out', 'media', 'index.html'), "utf8");
         html = html.replace(/vscode-scheme/g, scriptsUri.toString()).replace(/%3A/g, ":");
         return html;
     }

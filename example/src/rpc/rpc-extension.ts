@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { RpcCommon, IPromiseCallbacks } from '../rpc-common';
+import { RpcCommon, IPromiseCallbacks } from './rpc-common';
 
 export class RpcExtenstion extends RpcCommon {
   webview: vscode.Webview;
