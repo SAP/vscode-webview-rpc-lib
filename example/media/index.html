@@ -59,8 +59,9 @@
         const vscode = acquireVsCodeApi();
         window.vscode = vscode;
     </script>
-    <script type="module" src="vscode-scheme/rpc-common.js"></script>
-    <script type="module" src="vscode-scheme/webview/rpc-browser.js"></script>
+     <script>var exports = {};</script>
+    <script type="module" src="vscode-scheme/rpc/rpc-common.js"></script>
+    <script type="module" src="vscode-scheme/rpc/webview/rpc-browser.js"></script>
     <script type="module" src="vscode-scheme/main.js"></script>
 </head>
 

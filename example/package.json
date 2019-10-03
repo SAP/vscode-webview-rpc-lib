@@ -10,14 +10,19 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"onCommand:extension.openwebview",
+		"onCommand:extension.sendMessage"
 	],
-	"main": "./out/extension.js",
+	"main": "./out/extension",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
+				"command": "extension.openwebview",
+				"title": "Open Webview"
+			},
+			{
+				"command": "extension.sendMessage",
+				"title": "Send Message to Webview"
 			}
 		]
 	},

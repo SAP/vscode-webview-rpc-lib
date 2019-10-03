@@ -1,23 +1,23 @@
-import { RpcBrowser } from "./webview/rpc-browser.js";
+import { RpcBrowser } from "./rpc/webview/rpc-browser.js";
 
 let context = {
     window : window
 }
 let functions = {
-    
+    runFunctionInWebview: runFunctionInWebview
 }
-console.log("aaa")
 let rpc = new RpcBrowser(context, functions);
-console.log("bbb")
-debugger;
 window.onload = function(){
-debugger;
-console.log("ccc")
     document.getElementById("btnShowMessage").addEventListener("click",showMessage);
 }
 
 function showMessage() {
     rpc.invoke("showMessage", "I'm message", (content)=>{
-        document.getElementById("responsediv").innerText = content.message
+        document.getElementById("responsediv").innerText = content
     })
+}
+
+function runFunctionInWebview(res) {
+    document.getElementById("responsediv").innerText = res
+    return "updated"
 }

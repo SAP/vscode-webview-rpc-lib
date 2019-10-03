@@ -1,4 +1,3 @@
-console.log('bbbb');
 import { RpcCommon } from "../rpc-common.js";
 export class RpcBrowser extends RpcCommon {
     constructor(context, functions) {
@@ -23,7 +22,7 @@ export class RpcBrowser extends RpcCommon {
                         });
                     }
                     else {
-                        this.postMessage(message.id, message.method, message.params, undefined);
+                        this.postMessage(message.id, message.method, message.params, ret);
                     }
                 }
             }
@@ -40,5 +39,4 @@ export class RpcBrowser extends RpcCommon {
         }, '*');
     }
 }
-console.log('ccccc')
 //# sourceMappingURL=rpc-browser.js.map

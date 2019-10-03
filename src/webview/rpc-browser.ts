@@ -26,7 +26,7 @@ export class RpcBrowser extends RpcCommon {
             });
           }
           else {
-            this.postMessage(message.id, message.method, message.params, undefined);
+            this.postMessage(message.id, message.method, message.params, ret);
           }
         }
       }

@@ -3,21 +3,24 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
+import { RpcExtenstion } from './extension/rpc-extension';
+import { SSL_OP_CIPHER_SERVER_PREFERENCE } from 'constants';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "rpc-example" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', () => {
+	let cmd1 = vscode.commands.registerCommand('extension.openwebview', () => {
 		RpcExamplePanel.createOrShow(context.extensionPath);
 	});
+
+	context.subscriptions.push(cmd1);
+
+	let cmd2 = vscode.commands.registerCommand('extension.sendMessage', () => {
+		RpcExamplePanel.sendMessage();
+	});
+
+	context.subscriptions.push(cmd2);
 
 	if (vscode.window.registerWebviewPanelSerializer) {
 		// Make sure we register a serializer in activation event
@@ -29,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 	}
 
-	context.subscriptions.push(disposable);
+	
 }
 
 
@@ -44,14 +47,23 @@ class RpcExamplePanel {
 
 	public static readonly viewType = 'rpcExample';
 
+	private context : any;
 	private readonly _panel: vscode.WebviewPanel;
 	private readonly _extensionPath: string;
 	private _disposables: vscode.Disposable[] = [];
+	private _rpc: RpcExtenstion;
+
+	public static sendMessage() {
+		this.currentPanel._rpc.invoke("runFunctionInWebview", ["message from extension"], (content)=>{
+			vscode.window.showInformationMessage(content);
+		});
+	}
 
 	public static createOrShow(extensionPath: string) {
 		const column = vscode.window.activeTextEditor
 			? vscode.window.activeTextEditor.viewColumn
 			: undefined;
+
 
 		// If we already have a panel, show it.
 		if (RpcExamplePanel.currentPanel) {
@@ -81,6 +93,26 @@ class RpcExamplePanel {
 		this._panel = panel;
 		this._extensionPath = extensionPath;
 
+		let functions = {
+			showMessage: (context, message) => {
+				let _vscode = vscode;
+				return new Promise((resolve, reject) => {
+					_vscode.window.showInformationMessage(message, "yes", "no").then((res) => {
+						resolve(res);
+					});
+				});
+			  },
+			
+			  setContext: (context: { currentPanel:any }) => {
+				this.context = context;
+			  }
+		};
+		this._rpc = new RpcExtenstion(this._panel, functions);
+
+		functions.setContext({
+			currentPanel: this._panel
+		  });
+
 		// Set the webview's initial html content
 		this.update(this._panel.webview);
 
@@ -98,21 +130,7 @@ class RpcExamplePanel {
 			null,
 			this._disposables
 		);
-
-		// Handle messages from the webview
-		this._panel.webview.onDidReceiveMessage(
-			message => {
-				switch (message.command) {
-					case 'alert':
-						vscode.window.showErrorMessage(message.text);
-						return;
-				}
-			},
-			null,
-			this._disposables
-		);
 	}
-
 
 	public dispose() {
 		RpcExamplePanel.currentPanel = undefined;
@@ -141,7 +159,7 @@ class RpcExamplePanel {
 
 		// And the uri we use to load this script in the webview
 		const scriptsUri = webview.asWebviewUri(scriptsPathOnDisk);
-		
+
 		let html = fs.readFileSync(path.join(this._extensionPath, 'media', 'index.html'), "utf8");
 		html = html.replace(/vscode-scheme/g, scriptsUri.toString()).replace(/%3A/g, ":");
 
@@ -149,7 +167,5 @@ class RpcExamplePanel {
 	}
 }
 
-
-
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
