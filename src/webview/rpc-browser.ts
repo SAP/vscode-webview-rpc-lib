@@ -1,47 +1,49 @@
-import { RpcCommon } from "../rpc-common";
+import * as vscode from 'vscode';
+import { RpcCommon, IPromiseCallbacks } from '../rpc-common';
 
 export class RpcBrowser extends RpcCommon {
-  functions: Function[]; // functions that can be called from the webview.
-  context: any;
+  window: Window;
 
-  constructor(context: any, functions: any) {
+  constructor(window: Window) {
     super();
-    this.callbacks = [];
-    this.context = context;
-    this.functions = functions;
-    context.window.addEventListener('message', event => {
+    this.window = window;
+    this.window.addEventListener('message', (event) => {
       const message = event.data;
-
-      if (message.command === 'rpc') {
-        if (this.callbacks[message.id]) {
-          this.callbacks[message.id](message.ret);
-          this.callbacks[message.id] = undefined;
-        } else if (this.functions[message.method]) {
-          let ret = this.functions[message.method](message.params);
-          //support async and sync
-          if (ret && ret.then) {
-            ret.then((res) => {
-              // return the result
-              this.postMessage(message.id, message.method, message.params, res);
-            });
-          }
-          else {
-            this.postMessage(message.id, message.method, message.params, ret);
-          }
-        }
+      switch (message.command) {
+        case "rpc-response":
+          this.handleResponse(message);
+          break;
+        case 'rpc-request':
+          this.handleRequest(message);
+          break;
       }
     });
   }
 
-  postMessage(id: number, method: string, params: any[], res?: any) {
-    //@ts-ignore
-    window.vscode.postMessage({
-      command: 'rpc',
+  sendRequest(id: number, method: string, params: any[]) {
+    // consider cancelling the timer if the promise if fulfilled before timeout is reached
+    setTimeout(() => {
+      const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
+      if (promiseCallbacks) {
+        promiseCallbacks.reject("Request timeouted out");
+        this.promiseCallbacks.delete(id);
+      }
+    }, this.timeout);
+
+    this.window.postMessage({
+      command: 'rpc-request',
       id: id,
       method: method,
-      params: params,
-      ret: res
+      params: params
     }, '*');
   }
 
+  sendResponse(id: number, response: any, success: boolean = true): void {
+    this.window.postMessage({
+      command: 'rpc-response',
+      id: id,
+      response: response,
+      success: success
+    }, '*');
+  }
 }

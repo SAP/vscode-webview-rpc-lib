@@ -1,40 +1,48 @@
 import * as vscode from 'vscode';
-import { RpcCommon } from '../rpc-common';
+import { RpcCommon, IPromiseCallbacks } from '../rpc-common';
 
 export class RpcExtenstion extends RpcCommon {
-  functions: Function[]; // functions that can be called from the webview.
-  context: vscode.WebviewPanel; //currentPanel (a vscode.WebviewPanel)
+  webview: vscode.Webview;
 
-  constructor(context: any, functions: any) {
+  constructor(webview: vscode.Webview) {
     super();
-    this.callbacks = [];
-    this.context = context;
-    this.functions = functions;
-    this.context.webview.onDidReceiveMessage(message => {
-      if (message.command === 'rpc') {
-        if (this.callbacks[message.id]) {
-          this.callbacks[message.id](message.ret);
-          delete this.callbacks[message.id];
-        } else if (functions[message.method]) {
-          functions[message.method](vscode, message.params)
-            //support only async
-            //todo: add sync support (compare to rpc-browser)
-            .then((res: any) => {
-              // return the result
-              this.postMessage(message.id, message.method, message.params, res);
-            });
-        }
+    this.webview = webview;
+    this.webview.onDidReceiveMessage(message => {
+      switch (message.command) {
+        case "rpc-response":
+          this.handleResponse(message);
+          break;
+        case 'rpc-request':
+          this.handleRequest(message);
+          break;
       }
     });
   }
 
-  postMessage(id: number, method: string, params: any[], res?: any) {
-    this.context.webview.postMessage({
-      command: 'rpc',
+  sendRequest(id: number, method: string, params: any[]) {
+    // consider cancelling the timer if the promise if fulfilled before timeout is reached
+    setTimeout(() => {
+      const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
+      if (promiseCallbacks) {
+        promiseCallbacks.reject("Request timeouted out");
+        this.promiseCallbacks.delete(id);
+      }
+    }, this.timeout);
+
+    this.webview.postMessage({
+      command: 'rpc-request',
       id: id,
       method: method,
-      params: params,
-      ret: res
+      params: params
+    });
+  }
+
+  sendResponse(id: number, response: any, success: boolean = true): void {
+    this.webview.postMessage({
+      command: 'rpc-response',
+      id: id,
+      response: response,
+      success: success
     });
   }
 }
