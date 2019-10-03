@@ -24,7 +24,7 @@ export class RpcExtenstion extends RpcCommon {
     setTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
-        promiseCallbacks.reject("Request timeouted out");
+        promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
       }
     }, this.timeout);

@@ -4,7 +4,8 @@ let functions = {
     runFunctionInWebview: runFunctionInWebview
 }
 
-let rpc = new RpcBrowser(window);
+const vscode = acquireVsCodeApi();
+let rpc = new RpcBrowser(window, vscode);
 rpc.registerMethod({func: functions.runFunctionInWebview});
 
 window.onload = function(){

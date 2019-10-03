@@ -2,9 +2,10 @@
 // see: https://github.com/microsoft/TypeScript/issues/16577#issuecomment-343610106
 import { RpcCommon } from './rpc-common.js';
 export class RpcBrowser extends RpcCommon {
-    constructor(window) {
+    constructor(window, vscode) {
         super();
         this.window = window;
+        this.vscode = vscode;
         this.window.addEventListener('message', (event) => {
             const message = event.data;
             switch (message.command) {
@@ -18,7 +19,7 @@ export class RpcBrowser extends RpcCommon {
         });
     }
     sendRequest(id, method, params) {
-        // consider cancelling the timer if the promise if fulfilled before timeout is reached
+        // TODO: consider cancelling the timer if the promise if fulfilled before timeout is reached
         setTimeout(() => {
             const promiseCallbacks = this.promiseCallbacks.get(id);
             if (promiseCallbacks) {
@@ -26,20 +27,21 @@ export class RpcBrowser extends RpcCommon {
                 this.promiseCallbacks.delete(id);
             }
         }, this.timeout);
-        this.window.vscode.postMessage({
+        // TODO: find an alternative to appending vscode to the global scope (perhaps providing vscode as parameter to constructor)
+        this.vscode.postMessage({
             command: 'rpc-request',
             id: id,
             method: method,
             params: params
-        }, '*');
+        });
     }
     sendResponse(id, response, success = true) {
-        this.window.vscode.postMessage({
+        this.vscode.postMessage({
             command: 'rpc-response',
             id: id,
             response: response,
             success: success
-        }, '*');
+        });
     }
 }
 //# sourceMappingURL=rpc-browser.js.map
