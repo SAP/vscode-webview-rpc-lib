@@ -12,7 +12,7 @@ window.onload = function(){
 }
 
 function showMessage() {
-    rpc.invoke("showMessage", "I'm message").then((response)=>{
+    rpc.invoke("showMessage", ["I'm a message"]).then((response)=>{
         document.getElementById("responsediv").innerText = response;
     })
 }

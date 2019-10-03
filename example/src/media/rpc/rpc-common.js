@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 export class RpcCommon {
     constructor() {
         this.timeout = 15000; // timeout for response from remote in milliseconds
@@ -42,19 +51,24 @@ export class RpcCommon {
         }
     }
     handleRequest(message) {
-        const method = this.methods.get(message.method);
-        if (method) {
-            const func = method.func;
-            const thisArg = method.thisArg;
-            try {
-                const response = func.call(thisArg, ...message.params);
-                // TODO: if response is a promise, delay the response until the promise is fulfilled
-                this.sendResponse(message.id, response);
+        return __awaiter(this, void 0, void 0, function* () {
+            const method = this.methods.get(message.method);
+            if (method) {
+                const func = method.func;
+                const thisArg = method.thisArg;
+                try {
+                    let response = func.call(thisArg, ...message.params);
+                    // if response is a promise, delay the response until the promise is fulfilled
+                    if (typeof response.then === 'function') {
+                        response = yield response;
+                    }
+                    this.sendResponse(message.id, response);
+                }
+                catch (err) {
+                    this.sendResponse(message.id, err, false);
+                }
             }
-            catch (err) {
-                this.sendResponse(message.id, err, false);
-            }
-        }
+        });
     }
 }
 //# sourceMappingURL=rpc-common.js.map

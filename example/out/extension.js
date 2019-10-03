@@ -48,7 +48,7 @@ class RpcExamplePanel {
         this._panel = panel;
         this._extensionPath = extensionPath;
         let functions = {
-            showMessage: (context, message) => {
+            showMessage: (message) => {
                 let _vscode = vscode;
                 return new Promise((resolve, reject) => {
                     _vscode.window.showInformationMessage(message, "yes", "no").then((res) => {

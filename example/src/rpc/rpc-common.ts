@@ -73,14 +73,17 @@ export abstract class RpcCommon implements IRpc {
     }
   }
 
-  handleRequest(message: any): void {
+  async handleRequest(message: any): Promise<void> {
     const method: IMethod | undefined = this.methods.get(message.method);
     if (method) {
       const func: Function = method.func;
       const thisArg: any = method.thisArg;
       try {
-        const response: any = func.call(thisArg, ...message.params);
-        // TODO: if response is a promise, delay the response until the promise is fulfilled
+        let response: any = func.call(thisArg, ...message.params);
+        // if response is a promise, delay the response until the promise is fulfilled
+        if (typeof response.then === 'function') {
+          response = await response;
+        }
         this.sendResponse(message.id, response);
       } catch (err) {
         this.sendResponse(message.id, err, false);
