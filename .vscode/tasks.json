@@ -11,7 +11,9 @@
 			"presentation": {
 				"reveal": "never"
 			},
-			"options": {"cwd": "${workspaceFolder}/example"},
+			"options": {
+				"cwd": "${workspaceFolder}/example"
+			},
 			"group": {
 				"kind": "build",
 				"isDefault": true

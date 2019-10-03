@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,8 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-class RpcCommon {
+export class RpcCommon {
     constructor() {
         this.timeout = 15000; // timeout for response from remote in milliseconds
         this.promiseCallbacks = new Map();
@@ -73,5 +71,4 @@ class RpcCommon {
         });
     }
 }
-exports.RpcCommon = RpcCommon;
 //# sourceMappingURL=rpc-common.js.map

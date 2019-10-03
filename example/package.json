@@ -30,6 +30,7 @@
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
+		"copy": "rm -rf ./out/media && cp -r ./src/media ./out/media",
 		"pretest": "npm run compile",
 		"test": "node ./out/test/runTest.js"
 	},

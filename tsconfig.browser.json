@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"outDir": "out.browser",
+		"lib": ["es6", "dom"],
+		"sourceMap": true,
+		"rootDir": "src",
+		"strict": true
+	},
+	"exclude": ["node_modules", "src/rpc-extension.ts", "example"]
+}
