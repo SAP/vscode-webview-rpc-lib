@@ -7,5 +7,5 @@
 		"rootDir": "src",
 		"strict": true
 	},
-	"exclude": ["node_modules", "src/rpc-extension.ts", "example"]
+	"exclude": ["node_modules", "src/rpc-extension.ts", "src/rpc-extension-ws.ts", "example", "example-ws"]
 }

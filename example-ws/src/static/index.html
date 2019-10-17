@@ -1,0 +1,33 @@
+<html>
+
+<head>
+    <title>RPC WebSockets Example</title>
+    <script type="module" src="./rpc/rpc-common.js"></script>
+    <script type="module" src="./rpc/rpc-browser-ws.js"></script>
+    <script type="module">
+        import { RpcBrowserWebSockets } from "./rpc/rpc-browser-ws.js";
+
+        function sum(a, b) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(a + b);
+                }, 2000);
+            });
+        }
+        const ws = new WebSocket("ws://127.0.0.1:8081");
+        ws.onopen = (event) => {
+            const rpc = new RpcBrowserWebSockets(ws);
+            rpc.setResponseTimeout(30000);
+            rpc.registerMethod({ func: sum });
+            rpc.invoke("sub", [5,4]).then((val) => {
+                console.log(`sub is ${val}`);
+            });
+        };
+    </script>
+</head>
+
+<body>
+    RPC WebSockets Example
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "example-ws",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tsc -w -p .",
+    "compile": "rm -rf out && tsc -p . && cp -r src/static out/static",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/ws": "^6.0.3",
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {
+    "ws": "^7.1.2"
+  }
+}
