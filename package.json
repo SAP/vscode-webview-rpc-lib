@@ -1,0 +1,25 @@
+{
+  "name": "vscode-webview-rpc-lib",
+  "version": "0.0.1",
+  "description": "An RPC library for VSCode WebViews",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc -p ./tsconfig.ext.json",
+    "watch": "tsc -w -p ./tsconfig.ext.json",
+    "compile-browser": "tsc -p tsconfig.browser.json",
+    "watch-browser": "tsc -w -p ./tsconfig.browser.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.wdf.sap.corp/i040767/vscode-webviewrpc-lib.git"
+  },
+  "author": "Ido Perez",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/vscode": "^1.38.0",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.3",
+    "@types/node": "^10.12.21"
+  }
+}
