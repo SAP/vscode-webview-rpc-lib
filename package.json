@@ -17,9 +17,13 @@
   "author": "Ido Perez",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^10.12.21",
     "@types/vscode": "^1.38.0",
+    "@types/ws": "^6.0.3",
     "tslint": "^5.20.0",
-    "typescript": "^3.6.3",
-    "@types/node": "^10.12.21"
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "ws": "^7.1.2"
   }
 }
