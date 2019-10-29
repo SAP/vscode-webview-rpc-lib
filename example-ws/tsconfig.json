@@ -2,11 +2,11 @@
 	"compilerOptions": {
 		"module": "commonjs",
 		"target": "es6",
-		"outDir": "out.ext",
+		"outDir": "out",
 		"lib": ["es6"],
 		"sourceMap": true,
 		"rootDir": "src",
 		"strict": true
 	},
-	"exclude": ["node_modules", "src/rpc-browser.ts", "src/rpc-browser-ws.ts", "example", "example-ws"]
+	"exclude": ["node_modules"]
 }
