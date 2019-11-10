@@ -4,15 +4,16 @@
   "description": "An RPC library for VSCode WebViews",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc -p ./tsconfig.ext.json",
+    "compile": "rimraf ./out.ext && tsc -p ./tsconfig.ext.json",
     "watch": "tsc -w -p ./tsconfig.ext.json",
-    "compile-browser": "tsc -p tsconfig.browser.json",
+    "compile-browser": "rimraf ./out.browser && tsc -p tsconfig.browser.json",
     "watch-browser": "tsc -w -p ./tsconfig.browser.json",
+    "lint": "eslint ./**/*.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.wdf.sap.corp/i040767/vscode-webviewrpc-lib.git"
+    "url": "https://github.com/SAP/vscode-webview-rpc-lib"
   },
   "author": "Ido Perez",
   "license": "MIT",
@@ -20,7 +21,10 @@
     "@types/node": "^10.12.21",
     "@types/vscode": "^1.38.0",
     "@types/ws": "^6.0.3",
-    "tslint": "^5.20.0",
+    "@typescript-eslint/eslint-plugin": "^2.6.1",
+    "@typescript-eslint/parser": "^2.6.1",
+    "eslint": "^6.6.0",
+    "rimraf": "^3.0.0",
     "typescript": "^3.6.3"
   },
   "dependencies": {

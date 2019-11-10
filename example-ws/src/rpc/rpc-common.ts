@@ -4,7 +4,9 @@ export interface IRpc {
   sendResponse(id: number, response: any, success?: boolean): void;
   handleResponse(message: any): void;
   handleRequest(message: any): void;
-}
+  registerMethod(method: IMethod): void;
+  setResponseTimeout(timeout: number): void;
+  }
 
 export interface IPromiseCallbacks {
   resolve: Function;
@@ -30,7 +32,7 @@ export abstract class RpcCommon implements IRpc {
     this.registerMethod({ func: this.listLocalMethods, thisArg: this });
   }
 
-  public setResponseTimeout(timeout: number) {
+  public setResponseTimeout(timeout: number): void {
     this.timeout = timeout;
   }
 

@@ -5,13 +5,21 @@
   "main": "index.js",
   "scripts": {
     "watch": "tsc -w -p .",
-    "compile": "rm -rf out && tsc -p . && cp -r src/static out/static",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prep": "cd .. && npm run compile && copyfiles -f ./out.browser/*.js ./example-ws/src/static/rpc/",
+    "compile": "rimraf out && tsc -p . && copyfiles -u 1 ./src/static/** ./out/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./**/*.ts"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Eyal Barlev",
+  "publisher": "SAP",
+  "license": "MIT",
   "devDependencies": {
     "@types/ws": "^6.0.3",
+    "@typescript-eslint/eslint-plugin": "^2.6.1",
+    "@typescript-eslint/parser": "^2.6.1",
+    "copyfiles": "^2.1.1",
+    "eslint": "^6.6.0",
+    "rimraf": "^3.0.0",
     "typescript": "^3.6.4"
   },
   "dependencies": {

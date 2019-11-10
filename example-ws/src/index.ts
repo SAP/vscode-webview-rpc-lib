@@ -1,6 +1,7 @@
 import * as http from 'http';
 import * as fs from 'fs';
 import * as WebSocket from 'ws';
+import { IRpc } from './rpc/rpc-common';
 import { RpcExtenstionWebSockets } from './rpc/rpc-extension-ws';
 
 // web socket server
@@ -8,34 +9,34 @@ const wss = new WebSocket.Server({ port: 8081 }, () => {
   console.log('websocket server is listening on port 8081');
 });
 
-const sub = (a: number, b: number) => {
+const sub = (a: number, b: number): number => {
   return a-b;
 };
 
 wss.on('connection', function connection(ws) {
   console.log('new ws connection');
 
-  const rpc = new RpcExtenstionWebSockets(ws);
+  const rpc: IRpc = new RpcExtenstionWebSockets(ws);
   rpc.setResponseTimeout(30000);
   rpc.registerMethod({func: sub});
 
-  rpc.invoke("sum", [1,2]).then((val: any) => {
+  rpc.invoke("sum", [1,2]).then((val) => {
     console.log(`sum is ${val}`);
-  }).catch((err: any) => {
+  }).catch((err) => {
     console.error(err);
   });
 });
 
 // static content http server
 http.createServer(function (req, res) {
-  let url = req.url;
+  const url = req.url;
   fs.readFile(__dirname + req.url, function (err,data) {
     if (err) {
       res.writeHead(404);
       res.end(JSON.stringify(err));
       return;
     }
-    if (url && url.indexOf(".js") >= 0) {
+    if (url && url.includes(".js")) {
       res.setHeader("Content-Type", "application/javascript");
     }
     res.writeHead(200,);

@@ -1,5 +1,5 @@
-import * as vscode from 'vscode';
-import { RpcCommon, IPromiseCallbacks } from './rpc-common';
+import * as vscode from "vscode";
+import { RpcCommon, IPromiseCallbacks } from "./rpc-common";
 
 export class RpcExtenstion extends RpcCommon {
   webview: vscode.Webview;
@@ -9,17 +9,17 @@ export class RpcExtenstion extends RpcCommon {
     this.webview = webview;
     this.webview.onDidReceiveMessage(message => {
       switch (message.command) {
-        case "rpc-response":
-          this.handleResponse(message);
-          break;
-        case 'rpc-request':
-          this.handleRequest(message);
-          break;
+      case "rpc-response":
+        this.handleResponse(message);
+        break;
+      case "rpc-request":
+        this.handleRequest(message);
+        break;
       }
     });
   }
 
-  sendRequest(id: number, method: string, params: any[]) {
+  sendRequest(id: number, method: string, params?: any[]) {
     // consider cancelling the timer if the promise if fulfilled before timeout is reached
     setTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
@@ -30,7 +30,7 @@ export class RpcExtenstion extends RpcCommon {
     }, this.timeout);
 
     this.webview.postMessage({
-      command: 'rpc-request',
+      command: "rpc-request",
       id: id,
       method: method,
       params: params
@@ -39,7 +39,7 @@ export class RpcExtenstion extends RpcCommon {
 
   sendResponse(id: number, response: any, success: boolean = true): void {
     this.webview.postMessage({
-      command: 'rpc-response',
+      command: "rpc-response",
       id: id,
       response: response,
       success: success
