@@ -7,9 +7,10 @@
     "compile": "rimraf ./out.ext && tsc -p ./tsconfig.ext.json",
     "watch": "tsc -w -p ./tsconfig.ext.json",
     "compile-browser": "rimraf ./out.browser && tsc -p tsconfig.browser.json",
+    "compile-test": "rimraf ./out.test && tsc -p tsconfig.test.json",
     "watch-browser": "tsc -w -p ./tsconfig.browser.json",
     "lint": "eslint ./**/*.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest .out.test/test/"
   },
   "repository": {
     "type": "git",
@@ -18,12 +19,14 @@
   "author": "Ido Perez",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^24.0.22",
     "@types/node": "^10.12.21",
     "@types/vscode": "^1.38.0",
     "@types/ws": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
     "eslint": "^6.6.0",
+    "jest": "^24.9.0",
     "rimraf": "^3.0.0",
     "typescript": "^3.6.3"
   },

@@ -63,3 +63,4 @@ typings/
 out
 out.ext
 out.browser
+out.test

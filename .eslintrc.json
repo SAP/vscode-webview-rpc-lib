@@ -16,7 +16,7 @@
     "parserOptions": {
         "ecmaVersion": 2018,
         "sourceType": "module",
-        "project": ["./tsconfig.ext.json", "./tsconfig.browser.json"]
+        "project": ["./tsconfig.ext.json", "./tsconfig.browser.json", "./tsconfig.test.json"]
     },
     "plugins": [
         "@typescript-eslint"

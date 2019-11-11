@@ -1,20 +1,20 @@
-import * as http from 'http';
-import * as fs from 'fs';
-import * as WebSocket from 'ws';
-import { IRpc } from './rpc/rpc-common';
-import { RpcExtenstionWebSockets } from './rpc/rpc-extension-ws';
+import * as http from "http";
+import * as fs from "fs";
+import * as WebSocket from "ws";
+import { IRpc } from "./rpc/rpc-common";
+import { RpcExtenstionWebSockets } from "./rpc/rpc-extension-ws";
 
 // web socket server
 const wss = new WebSocket.Server({ port: 8081 }, () => {
-  console.log('websocket server is listening on port 8081');
+  console.log("websocket server is listening on port 8081");
 });
 
 const sub = (a: number, b: number): number => {
   return a-b;
 };
 
-wss.on('connection', function connection(ws) {
-  console.log('new ws connection');
+wss.on("connection", function connection(ws) {
+  console.log("new ws connection");
 
   const rpc: IRpc = new RpcExtenstionWebSockets(ws);
   rpc.setResponseTimeout(30000);
@@ -30,7 +30,7 @@ wss.on('connection', function connection(ws) {
 // static content http server
 http.createServer(function (req, res) {
   const url = req.url;
-  fs.readFile(__dirname + req.url, function (err,data) {
+  fs.readFile(`${__dirname}/static${req.url}`, function (err,data) {
     if (err) {
       res.writeHead(404);
       res.end(JSON.stringify(err));
@@ -43,5 +43,5 @@ http.createServer(function (req, res) {
     res.end(data);
   });
 }).listen(8080, ()=> {
-  console.log('static content server is listening on port 8080');
+  console.log("static content server is listening on port 8080");
 });
