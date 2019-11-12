@@ -1,11 +1,14 @@
 export interface IRpc {
-  invoke(method: string, params: any): Promise<any>;
+  invoke(method: string, params?: any): Promise<any>;
   sendRequest(id: number, method: string, params?: any[]): void;
   sendResponse(id: number, response: any, success?: boolean): void;
   handleResponse(message: any): void;
   handleRequest(message: any): void;
   registerMethod(method: IMethod): void;
+  unregisterMethod(method: IMethod): void;
   setResponseTimeout(timeout: number): void;
+  listLocalMethods(): string[];
+  listRemoteMethods(): Promise<string[]>;
 }
 
 export interface IPromiseCallbacks {

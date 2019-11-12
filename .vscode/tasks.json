@@ -17,10 +17,18 @@
 				"reveal": "never"
 			},
 			"options": {
-				"cwd": "${workspaceFolder}/example"
+				"cwd": "${workspaceFolder}"
 			},
 			"group": {
 				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "npm",
+			"script": "test",
+			"group": {
+				"kind": "test",
 				"isDefault": true
 			}
 		}

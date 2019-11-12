@@ -14,9 +14,9 @@
 				"${workspaceRoot}/node_modules/jest/bin/jest.js",
 				"--runInBand"
 			],
-			"cwd": "${workspaceRoot}/out.test",
 			"args": [
-				"${workspaceRoot}/out.test/test/"
+				"out\\.test.*.js",
+				"--coverage"
 			],
 			"console": "integratedTerminal",
 			"internalConsoleOptions": "neverOpen",

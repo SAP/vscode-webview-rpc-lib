@@ -4,8 +4,11 @@
   "description": "An RPC library for VSCode WebViews",
   "main": "index.js",
   "scripts": {
-    "compile": "rimraf ./out.ext && tsc -p ./tsconfig.ext.json",
-    "watch": "tsc -w -p ./tsconfig.ext.json",
+    "compile": "npm run compile-ext && npm run compile-test",
+    "watch": "npm run watch-ext && npm run watch-test",
+    "watch-ext": "tsc -w -p ./tsconfig.ext.json",
+    "watch-test": "tsc -w -p ./tsconfig.test.json",
+    "compile-ext": "rimraf ./out.ext && tsc -p ./tsconfig.ext.json",
     "compile-browser": "rimraf ./out.browser && tsc -p tsconfig.browser.json",
     "compile-test": "rimraf ./out.test && tsc -p tsconfig.test.json",
     "watch-browser": "tsc -w -p ./tsconfig.browser.json",
