@@ -1,25 +1,17 @@
 // must specify ".js" for import in browser to locate rpc-common.js
 // see: https://github.com/microsoft/TypeScript/issues/16577#issuecomment-343610106
 
-import { RpcCommon, IPromiseCallbacks } from "./rpc-common.js";
+import { RpcCommon, IPromiseCallbacks } from "../rpc-common.js";
 
-export class RpcBrowserWebSockets extends RpcCommon {
-  ws: WebSocket;
+export class RpcMock extends RpcCommon {
+  peer: RpcMock | undefined;
 
-  constructor(ws: WebSocket) {
+  constructor() {
     super();
-    this.ws = ws;
-    this.ws.addEventListener("message", (event) => {
-      const message: any = JSON.parse(event.data as string);
-      switch (message.command) {
-      case "rpc-response":
-        this.handleResponse(message);
-        break;
-      case "rpc-request":
-        this.handleRequest(message);
-        break;
-      }
-    });
+  }
+
+  setPeer(peer: RpcMock) {
+    this.peer = peer;
   }
 
   sendRequest(id: number, method: string, params?: any[]) {
@@ -40,7 +32,7 @@ export class RpcBrowserWebSockets extends RpcCommon {
       params: params
     };
 
-    this.ws.send(JSON.stringify(requestBody));
+    this.send(JSON.stringify(requestBody));
   }
 
   sendResponse(id: number, response: any, success: boolean = true): void {
@@ -51,6 +43,25 @@ export class RpcBrowserWebSockets extends RpcCommon {
       success: success
     };
 
-    this.ws.send(JSON.stringify(responseBody));
+    this.send(JSON.stringify(responseBody));
+  }
+
+  send(message: string) {
+    if (this.peer) {
+      this.peer.receive(message);
+    }
+  }
+
+  receive(message: string) {
+    const messageObject: any = JSON.parse(message);
+    switch (messageObject.command) {
+    case "rpc-response":
+      this.handleResponse(messageObject);
+      break;
+    case "rpc-request":
+      this.handleRequest(messageObject);
+      break;
+    }
+
   }
 }

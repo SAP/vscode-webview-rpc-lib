@@ -4,23 +4,33 @@
   "description": "An RPC library for VSCode WebViews",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc -p ./tsconfig.ext.json",
-    "watch": "tsc -w -p ./tsconfig.ext.json",
-    "compile-browser": "tsc -p tsconfig.browser.json",
+    "compile": "npm run compile-ext && npm run compile-test",
+    "watch": "npm run watch-ext && npm run watch-test",
+    "watch-ext": "tsc -w -p ./tsconfig.ext.json",
+    "watch-test": "tsc -w -p ./tsconfig.test.json",
+    "compile-ext": "rimraf ./out.ext && tsc -p ./tsconfig.ext.json",
+    "compile-browser": "rimraf ./out.browser && tsc -p tsconfig.browser.json",
+    "compile-test": "rimraf ./out.test && tsc -p tsconfig.test.json",
     "watch-browser": "tsc -w -p ./tsconfig.browser.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint ./**/*.ts",
+    "test": "jest .out.test/test/"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.wdf.sap.corp/i040767/vscode-webviewrpc-lib.git"
+    "url": "https://github.com/SAP/vscode-webview-rpc-lib"
   },
   "author": "Ido Perez",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "devDependencies": {
+    "@types/jest": "^24.0.22",
     "@types/node": "^10.12.21",
     "@types/vscode": "^1.38.0",
     "@types/ws": "^6.0.3",
-    "tslint": "^5.20.0",
+    "@typescript-eslint/eslint-plugin": "^2.6.1",
+    "@typescript-eslint/parser": "^2.6.1",
+    "eslint": "^6.6.0",
+    "jest": "^24.9.0",
+    "rimraf": "^3.0.0",
     "typescript": "^3.6.3"
   },
   "dependencies": {

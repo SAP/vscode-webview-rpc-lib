@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es6",
+		"outDir": "out.test",
+		"lib": ["es6"],
+		"sourceMap": true,
+		"rootDir": "src",
+		"strict": true
+	},
+	"exclude": ["node_modules", "example", "example-ws"],
+	"include": ["src/rpc-common.ts", "src/test/*.ts"]
+}

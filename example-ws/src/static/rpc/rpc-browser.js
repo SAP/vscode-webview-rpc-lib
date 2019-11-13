@@ -1,12 +1,14 @@
-// must specify ".js" for import in browser to locate rpc-common.js
-// see: https://github.com/microsoft/TypeScript/issues/16577#issuecomment-343610106
+/* must specify ".js" for import in browser to locate rpc-common.js
+ see: https://github.com/microsoft/TypeScript/issues/16577#issuecomment-343610106
+*/
 import { RpcCommon } from "./rpc-common.js";
-export class RpcBrowserWebSockets extends RpcCommon {
-    constructor(ws) {
+export class RpcBrowser extends RpcCommon {
+    constructor(window, vscode) {
         super();
-        this.ws = ws;
-        this.ws.addEventListener("message", (event) => {
-            const message = JSON.parse(event.data);
+        this.window = window;
+        this.vscode = vscode;
+        this.window.addEventListener("message", (event) => {
+            const message = event.data;
             switch (message.command) {
                 case "rpc-response":
                     this.handleResponse(message);
@@ -27,22 +29,20 @@ export class RpcBrowserWebSockets extends RpcCommon {
             }
         }, this.timeout);
         // TODO: find an alternative to appending vscode to the global scope (perhaps providing vscode as parameter to constructor)
-        const requestBody = {
+        this.vscode.postMessage({
             command: "rpc-request",
             id: id,
             method: method,
             params: params
-        };
-        this.ws.send(JSON.stringify(requestBody));
+        });
     }
     sendResponse(id, response, success = true) {
-        const responseBody = {
+        this.vscode.postMessage({
             command: "rpc-response",
             id: id,
             response: response,
             success: success
-        };
-        this.ws.send(JSON.stringify(responseBody));
+        });
     }
 }
-//# sourceMappingURL=rpc-browser-ws.js.map
+//# sourceMappingURL=rpc-browser.js.map

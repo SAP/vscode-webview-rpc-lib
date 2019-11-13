@@ -4,6 +4,8 @@ export interface IRpc {
   sendResponse(id: number, response: any, success?: boolean): void;
   handleResponse(message: any): void;
   handleRequest(message: any): void;
+  registerMethod(method: IMethod): void;
+  setResponseTimeout(timeout: number): void;
 }
 
 export interface IPromiseCallbacks {
@@ -20,9 +22,10 @@ export interface IMethod {
 export abstract class RpcCommon implements IRpc {
   abstract sendRequest(id: number, method: string, params?: any[]): void;
   abstract sendResponse(id: number, response: any, success?: boolean): void;
-  protected promiseCallbacks: Map<number, IPromiseCallbacks>; // promise resolve and reject callbacks that are called when returning fron the webview
+  protected promiseCallbacks: Map<number, IPromiseCallbacks>; // promise resolve and reject callbacks that are called when returning from remote
   protected methods: Map<string, IMethod>;
-  protected timeout: number = 15000; // timeout for response from remote in milliseconds
+  // TODO: timeouts do not make sense for user interactions. consider not using timeouts by default
+  protected timeout: number = 3600000; // timeout for response from remote in milliseconds
 
   constructor() {
     this.promiseCallbacks = new Map();
@@ -30,7 +33,7 @@ export abstract class RpcCommon implements IRpc {
     this.registerMethod({ func: this.listLocalMethods, thisArg: this });
   }
 
-  public setResponseTimeout(timeout: number) {
+  public setResponseTimeout(timeout: number): void {
     this.timeout = timeout;
   }
 
@@ -51,7 +54,7 @@ export abstract class RpcCommon implements IRpc {
   }
 
   invoke(method: string, params?: any[]): Promise<any> {
-    // TODO: change to something more unique (or check to see if id doesn't alreday exist in this.promiseCallbacks)
+  // TODO: change to something more unique (or check to see if id doesn't alreday exist in this.promiseCallbacks)
     const id = Math.random();
     const promise = new Promise((resolve, reject) => {
       this.promiseCallbacks.set(id, { resolve: resolve, reject: reject });
@@ -79,9 +82,9 @@ export abstract class RpcCommon implements IRpc {
       const func: Function = method.func;
       const thisArg: any = method.thisArg;
       try {
-        let response: any = func.call(thisArg, ...message.params);
+        let response: any = func.apply(thisArg, message.params);
         // if response is a promise, delay the response until the promise is fulfilled
-        if (typeof response.then === 'function') {
+        if (typeof response.then === "function") {
           response = await response;
         }
         this.sendResponse(message.id, response);
