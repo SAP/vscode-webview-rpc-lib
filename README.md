@@ -1,3 +1,6 @@
+[![CircleCI](https://circleci.com/gh/SAP/vscode-webview-rpc-lib.svg?style=svg)](https://circleci.com/gh/SAP/vscode-webview-rpc-lib)
+![GitHub license](https://img.shields.io/badge/license-Apache_2.0-blue.svg)
+
 # vscode-webview-rpc-lib
 ## Description
 Provides a conventient way to communicate between VSCode extension and his webviews. Use RPC calls to invoke functions on the webview, receive callbacks and vice versa.
