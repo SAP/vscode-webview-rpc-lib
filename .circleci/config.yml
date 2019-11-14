@@ -20,7 +20,7 @@ jobs: # a collection of steps
             - ./node_modules
       - run: # run compile
           name: compile
-          command npm compile
+          command npm run compile
       - run: # run tests
           name: test
           command: npm test
