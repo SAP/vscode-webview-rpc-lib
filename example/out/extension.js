@@ -14,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const vscode = require("vscode");
 const fs = require("fs");
-const rpc_extension_1 = require("./rpc/rpc-extension");
+const RpcExtenstion = require('@sap-devx/webview-rpc/out.ext/rpc-extension.js').RpcExtenstion;
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -57,7 +57,7 @@ class RpcExamplePanel {
                 });
             }
         };
-        this._rpc = new rpc_extension_1.RpcExtenstion(this._panel.webview);
+        this._rpc = new RpcExtenstion(this._panel.webview);
         this._rpc.registerMethod({ func: functions.showMessage });
         // Set the webview's initial html content
         this.update(this._panel.webview);
@@ -112,7 +112,7 @@ class RpcExamplePanel {
     }
     _getHtmlForWebview(webview) {
         // Local path to main script run in the webview
-        const scriptsPathOnDisk = vscode.Uri.file(path.join(this._extensionPath, 'out'));
+        const scriptsPathOnDisk = vscode.Uri.file(path.join(this._extensionPath));
         // And the uri we use to load this script in the webview
         const scriptsUri = webview.asWebviewUri(scriptsPathOnDisk);
         let html = fs.readFileSync(path.join(this._extensionPath, 'out', 'media', 'index.html'), "utf8");
