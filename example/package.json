@@ -42,5 +42,7 @@
 		"typescript": "^3.3.1",
 		"vscode-test": "^1.2.0"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"@sap-devx/webview-rpc": "0.0.1"
+	}
 }
