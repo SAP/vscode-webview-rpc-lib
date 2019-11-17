@@ -1,5 +1,5 @@
 {
-  "name": "vscode-webview-rpc-lib",
+  "name": "@sap-devx/webview-rpc",
   "version": "0.0.1",
   "description": "An RPC library for VSCode WebViews",
   "main": "index.js",
