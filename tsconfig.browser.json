@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"moduleResolution": "node",
 		"target": "es6",
 		"outDir": "out.browser",
 		"lib": ["es6", "dom"],
