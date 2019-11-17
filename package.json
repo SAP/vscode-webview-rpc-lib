@@ -19,6 +19,7 @@
     "type": "git",
     "url": "https://github.com/SAP/vscode-webview-rpc-lib"
   },
+  "publisher": "SAP",
   "author": "Ido Perez",
   "license": "Apache 2.0",
   "devDependencies": {
