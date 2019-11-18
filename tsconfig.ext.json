@@ -6,7 +6,8 @@
 		"lib": ["es6"],
 		"sourceMap": true,
 		"rootDir": "src",
-		"strict": true
+		"strict": true,
+		"declaration": true
 	},
 	"exclude": ["node_modules", "src/rpc-browser.ts", "src/rpc-browser-ws.ts", "example", "example-ws"]
 }

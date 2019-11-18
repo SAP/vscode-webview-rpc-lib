@@ -14,7 +14,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const vscode = require("vscode");
 const fs = require("fs");
-const RpcExtenstion = require('@sap-devx/webview-rpc/out.ext/rpc-extension.js').RpcExtenstion;
+// const RpcExtenstion = require('@sap-devx/webview-rpc/out.ext/rpc-extension.js').RpcExtenstion;
+const rpc_extension_1 = require("@sap-devx/webview-rpc/out.ext/rpc-extension");
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -57,7 +58,7 @@ class RpcExamplePanel {
                 });
             }
         };
-        this._rpc = new RpcExtenstion(this._panel.webview);
+        this._rpc = new rpc_extension_1.RpcExtenstion(this._panel.webview);
         this._rpc.registerMethod({ func: functions.showMessage });
         // Set the webview's initial html content
         this.update(this._panel.webview);
