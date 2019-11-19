@@ -43,7 +43,7 @@ jobs: # a collection of steps
           at: ~/repo
       - run:
           name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=NPM_TOKEN" > ~/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=\$NPM_TOKEN" > ~/.npmrc
       - store_artifacts:
           path: ~/.npmrc
           destination: npmrc-file
