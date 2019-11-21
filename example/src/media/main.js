@@ -1,4 +1,4 @@
-import { RpcBrowser } from "./rpc/rpc-browser.js";
+import { RpcBrowser } from "../../node_modules/@sap-devx/webview-rpc/out.browser/rpc-browser.js";
 
 let functions = {
     runFunctionInWebview: runFunctionInWebview
