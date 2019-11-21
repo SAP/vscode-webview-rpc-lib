@@ -30,14 +30,14 @@
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
-		"copy": "rimraf ./out/media && cpx ./src/media/**/* ./out/media",
+		"copy": "rimraf ./out/media && copyfiles -u 1 ./src/media/** ./out/",
 		"pretest": "npm run compile"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
 		"@types/node": "^10.12.21",
 		"@types/vscode": "^1.38.0",
-		"cpx": "^1.5.0",
+		"copyfiles": "^2.1.1",
 		"glob": "^7.1.4",
 		"mocha": "^6.1.4",
 		"rimraf": "^3.0.0",
