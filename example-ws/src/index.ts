@@ -2,7 +2,7 @@ import * as http from "http";
 import * as fs from "fs";
 import * as WebSocket from "ws";
 import { IRpc } from "./rpc/rpc-common";
-import { RpcExtenstionWebSockets } from "./rpc/rpc-extension-ws";
+import { RpcExtensionWebSockets } from "./rpc/rpc-extension-ws";
 
 // web socket server
 const wss = new WebSocket.Server({ port: 8081 }, () => {
@@ -16,7 +16,7 @@ const sub = (a: number, b: number): number => {
 wss.on("connection", function connection(ws) {
   console.log("new ws connection");
 
-  const rpc: IRpc = new RpcExtenstionWebSockets(ws);
+  const rpc: IRpc = new RpcExtensionWebSockets(ws);
   rpc.setResponseTimeout(30000);
   rpc.registerMethod({func: sub});
 

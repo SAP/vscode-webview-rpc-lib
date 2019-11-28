@@ -3,8 +3,7 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-// const RpcExtenstion = require('@sap-devx/webview-rpc/out.ext/rpc-extension.js').RpcExtenstion;
-import { RpcExtenstion } from '@sap-devx/webview-rpc/out.ext/rpc-extension';
+import { RpcExtension } from '@sap-devx/webview-rpc/out.ext/rpc-extension';
 import { SSL_OP_CIPHER_SERVER_PREFERENCE } from 'constants';
 
 // this method is called when your extension is activated
@@ -52,7 +51,7 @@ class RpcExamplePanel {
 	private readonly _panel: vscode.WebviewPanel;
 	private readonly _extensionPath: string;
 	private _disposables: vscode.Disposable[] = [];
-	private _rpc: RpcExtenstion;
+	private _rpc: RpcExtension;
 
 	public static sendMessage() {
 		this.currentPanel._rpc.invoke("runFunctionInWebview", ["message from extension"]).then((response => {
@@ -104,7 +103,7 @@ class RpcExamplePanel {
 				});
 			  }
 		};
-		this._rpc = new RpcExtenstion(this._panel.webview);
+		this._rpc = new RpcExtension(this._panel.webview);
 		this._rpc.registerMethod({ func: functions.showMessage });
 
 		// Set the webview's initial html content
