@@ -30,7 +30,7 @@ Also, to use this library, you need to run it inside a VSCode extension using [V
 Create new instance of the Rpc in the extension side and the Webview side
 * In the extension code use the following example to start new instance of the RpcExtension:
     ```ts
-    this._rpc = new RpcExtenstion(this._panel.webview);
+    this._rpc = new RpcExtension(this._panel.webview);
     ```
 * In the Webview JS code use the following example to start new instance of the RpcBrowser:
     ```js
