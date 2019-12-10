@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/webview-rpc",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "An RPC library for VSCode WebViews",
   "scripts": {
     "compile": "npm run compile-ext && npm run compile-browser && npm run compile-test",
