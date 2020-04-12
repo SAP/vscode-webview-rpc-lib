@@ -35,14 +35,14 @@
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
-		"@types/node": "^10.12.21",
-		"@types/vscode": "^1.38.0",
-		"copyfiles": "^2.1.1",
-		"glob": "^7.1.4",
-		"mocha": "^6.1.4",
-		"rimraf": "^3.0.0",
-		"typescript": "^3.3.1",
-		"vscode-test": "^1.2.0"
+		"@types/node": "^13.11.1",
+		"@types/vscode": "^1.44.0",
+		"copyfiles": "^2.2.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.1.1",
+		"rimraf": "^3.0.2",
+		"typescript": "^3.8.3",
+		"vscode-test": "^1.3.0"
 	},
 	"dependencies": {
 		"@sap-devx/webview-rpc": "0.2.1"
