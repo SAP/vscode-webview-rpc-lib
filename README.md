@@ -3,7 +3,7 @@
 
 # vscode-webview-rpc-lib
 ## Description
-Provides a conventient way to communicate between VSCode extension and his webviews. Use RPC calls to invoke functions on the webview, receive callbacks and vice versa.
+Provides a conventient way to communicate between VSCode extension and its webviews. Use RPC calls to invoke functions on the webview, receive callbacks and vice versa.
 
 ## Requirements
 You need to have [node.js](https://www.npmjs.com/package/node) installed on your machine.
