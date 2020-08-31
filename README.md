@@ -85,6 +85,3 @@ Contributing information can be found in the [CONTRIBUTING.md](CONTRIBUTING.md) 
 
 ## To-Do (upcoming changes)
 * remove the need to decalre exposed functions
-
-## License
-Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved. This file is licensed under the Apache Software License, v. 2 except as noted otherwise in the [LICENSE](LICENSE) file.
