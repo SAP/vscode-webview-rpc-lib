@@ -12,7 +12,7 @@
     "compile-test": "rimraf ./out.test && tsc -p tsconfig.test.json",
     "watch-browser": "tsc -w -p ./tsconfig.browser.json",
     "lint": "eslint ./**/*.ts",
-    "test": "jest .out.test/test/"
+    "test": "jest .out.test/test/ --coverage"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,8 @@
     "eslint": "^6.8.0",
     "jest": "^25.3.0",
     "rimraf": "^3.0.2",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "coveralls": "3.1.0"
   },
   "dependencies": {
     "ws": "^7.2.3"
