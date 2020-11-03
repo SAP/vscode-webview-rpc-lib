@@ -1,6 +1,7 @@
 [![CircleCI](https://circleci.com/gh/SAP/vscode-webview-rpc-lib.svg?style=svg)](https://circleci.com/gh/SAP/vscode-webview-rpc-lib)
 ![GitHub license](https://img.shields.io/badge/license-Apache_2.0-blue.svg)
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/vscode-webview-rpc-lib)](https://api.reuse.software/info/github.com/SAP/vscode-webview-rpc-lib)
+[![dependentbot](https://api.dependabot.com/badges/status?host=github&repo=SAP/vscode-webview-rpc-lib)](https://dependabot.com/)
 
 # vscode-webview-rpc-lib
 ## Description
