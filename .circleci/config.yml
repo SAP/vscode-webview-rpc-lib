@@ -36,11 +36,11 @@ jobs: # a collection of steps
           name: ls
           command: ls
       - run:
-          name: ls coverage
-          command: ls coverage
+          name: ls out.test
+          command: ls out.test
       - run:
-          name: ls reports
-          command: ls reports
+          name: ls out.test/test
+          command: out.test/test
       - run:
           name: coverall
           command: cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
