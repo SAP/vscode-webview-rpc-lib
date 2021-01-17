@@ -22,7 +22,7 @@
   "author": "Ido Perez",
   "license": "Apache 2.0",
   "devDependencies": {
-    "@types/jest": "^24.9.1",
+    "@types/jest": "^26.0.20",
     "@types/node": "^10.17.19",
     "@types/vscode": "^1.44.0",
     "@types/ws": "^6.0.4",
