@@ -12,7 +12,7 @@
     "compile-test": "rimraf ./out.test && tsc -p tsconfig.test.json",
     "watch-browser": "tsc -w -p ./tsconfig.browser.json",
     "lint": "eslint ./**/*.ts",
-    "test": "jest .out.test/test/"
+    "test": "jest .out.test/test/ --coverage"
   },
   "repository": {
     "type": "git",
@@ -31,9 +31,29 @@
     "eslint": "^6.8.0",
     "jest": "^25.3.0",
     "rimraf": "^3.0.2",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "coveralls": "3.1.0",
+    "cz-conventional-changelog": "3.3.0",
+    "@commitlint/cli": "11.0.0",
+    "@commitlint/config-conventional": "11.0.0",
+    "husky": "4.3.0"
   },
   "dependencies": {
     "ws": "^7.2.3"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   }
 }

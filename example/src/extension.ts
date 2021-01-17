@@ -4,7 +4,6 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { RpcExtension } from '@sap-devx/webview-rpc/out.ext/rpc-extension';
-import { SSL_OP_CIPHER_SERVER_PREFERENCE } from 'constants';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
