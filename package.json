@@ -12,7 +12,7 @@
     "compile-test": "rimraf ./out.test && tsc -p tsconfig.test.json",
     "watch-browser": "tsc -w -p ./tsconfig.browser.json",
     "lint": "eslint ./**/*.ts",
-    "test": "jest .out.test/test/"
+    "test": "jest .out.test/test/ --coverage"
   },
   "repository": {
     "type": "git",
@@ -22,18 +22,38 @@
   "author": "Ido Perez",
   "license": "Apache 2.0",
   "devDependencies": {
-    "@types/jest": "^24.9.1",
+    "@types/jest": "^26.0.20",
     "@types/node": "^10.17.19",
     "@types/vscode": "^1.44.0",
     "@types/ws": "^7.2.9",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
     "eslint": "^6.8.0",
-    "jest": "^25.3.0",
+    "jest": "^26.6.3",
     "rimraf": "^3.0.2",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "coveralls": "3.1.0",
+    "cz-conventional-changelog": "3.3.0",
+    "@commitlint/cli": "11.0.0",
+    "@commitlint/config-conventional": "11.0.0",
+    "husky": "4.3.8"
   },
   "dependencies": {
     "ws": "^7.2.3"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   }
 }

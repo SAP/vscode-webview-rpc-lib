@@ -3,6 +3,7 @@ import * as fs from "fs";
 import * as WebSocket from "ws";
 import { IRpc } from "./rpc/rpc-common";
 import { RpcExtensionWebSockets } from "./rpc/rpc-extension-ws";
+import { sanitizeUrl } from '@braintree/sanitize-url';
 
 // web socket server
 const wss = new WebSocket.Server({ port: 8081 }, () => {
@@ -29,8 +30,8 @@ wss.on("connection", function connection(ws) {
 
 // static content http server
 http.createServer(function (req, res) {
-  const url = req.url;
-  fs.readFile(`${__dirname}/static${req.url}`, function (err,data) {
+  const url = sanitizeUrl(req.url);
+  fs.readFile(`${__dirname}/static${url}`, function (err,data) {
     if (err) {
       res.writeHead(404);
       res.end(JSON.stringify(err));
