@@ -4,17 +4,21 @@
 
 import { RpcCommon, IPromiseCallbacks } from "./rpc-common.js";
 import { Webview } from "vscode";
+import { IChildLogger } from "@vscode-logging/types";
+import { noopLogger } from "./noop-logger";
 
 export class RpcBrowser extends RpcCommon {
   window: Window;
   vscode: Webview;
 
-  constructor(window: Window, vscode: Webview) {
-    super();
+  constructor(window: Window, vscode: Webview, logger: IChildLogger = noopLogger) {
+    super(logger);
     this.window = window;
     this.vscode = vscode;
+    this.logger = logger;
     this.window.addEventListener("message", (event) => {
       const message = event.data;
+      this.logger.debug(`Received event: ${message.command} id: ${message.id} method: ${message.method} params: ${message.params}`);
       switch (message.command) {
       case "rpc-response":
         this.handleResponse(message);

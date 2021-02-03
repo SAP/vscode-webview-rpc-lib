@@ -1,3 +1,5 @@
+import { IChildLogger } from "@vscode-logging/types";
+
 export interface IRpc {
   invoke(method: string, params?: any): Promise<any>;
   sendRequest(id: number, method: string, params?: any[]): void;
@@ -27,12 +29,14 @@ export abstract class RpcCommon implements IRpc {
   abstract sendResponse(id: number, response: any, success?: boolean): void;
   protected promiseCallbacks: Map<number, IPromiseCallbacks>; // promise resolve and reject callbacks that are called when returning from remote
   protected methods: Map<string, IMethod>;
+  protected logger: IChildLogger;
   // TODO: timeouts do not make sense for user interactions. consider not using timeouts by default
   protected timeout: number = 3600000; // timeout for response from remote in milliseconds
 
-  constructor() {
+  constructor(logger: IChildLogger) {
     this.promiseCallbacks = new Map();
     this.methods = new Map();
+    this.logger = logger;
     this.registerMethod({ func: this.listLocalMethods, thisArg: this });
   }
 
@@ -73,6 +77,7 @@ export abstract class RpcCommon implements IRpc {
       if (message.success) {
         promiseCallbacks.resolve(message.response);
       } else {
+        this.logger.warn(`Message id ${message.id} rejected, response: ${message.response}`);
         promiseCallbacks.reject(message.response);
       }
       this.promiseCallbacks.delete(message.id);
@@ -92,6 +97,7 @@ export abstract class RpcCommon implements IRpc {
         }
         this.sendResponse(message.id, response);
       } catch (err) {
+        this.logger.error(`Failed to handle request ${message.command} id: ${message.id} error: ${err.message}`);
         this.sendResponse(message.id, err, false);
       }
     }

@@ -1,13 +1,14 @@
 // must specify ".js" for import in browser to locate rpc-common.js
 // see: https://github.com/microsoft/TypeScript/issues/16577#issuecomment-343610106
 
-import { RpcCommon, IPromiseCallbacks } from "../rpc-common.js";
+import { IChildLogger } from "@vscode-logging/types";
+import { RpcCommon, IPromiseCallbacks } from "../rpc-common";
 
 export class RpcMock extends RpcCommon {
   peer: RpcMock | undefined;
 
-  constructor() {
-    super();
+  constructor(logger: IChildLogger) {
+    super(logger);
   }
 
   setPeer(peer: RpcMock) {
