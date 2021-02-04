@@ -2,12 +2,13 @@
 // see: https://github.com/microsoft/TypeScript/issues/16577#issuecomment-343610106
 
 import { IChildLogger } from "@vscode-logging/types";
+import { noopLogger } from "../noop-logger";
 import { RpcCommon, IPromiseCallbacks } from "../rpc-common";
 
 export class RpcMock extends RpcCommon {
   peer: RpcMock | undefined;
 
-  constructor(logger: IChildLogger) {
+  constructor(logger: IChildLogger = noopLogger) {
     super(logger);
   }
 

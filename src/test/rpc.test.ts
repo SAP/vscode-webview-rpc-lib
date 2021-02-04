@@ -3,8 +3,8 @@ import { RpcMock } from "./rpc-mock";
 import { IRpc } from "../rpc-common";
 import { noopLogger } from "../noop-logger";
 
-let mock1: IRpc = new RpcMock(noopLogger);
-let mock2: IRpc = new RpcMock(noopLogger);
+let mock1: IRpc = new RpcMock();
+let mock2: IRpc = new RpcMock();
 (mock1 as RpcMock).setPeer(mock2 as RpcMock);
 (mock2 as RpcMock).setPeer(mock1 as RpcMock);
 

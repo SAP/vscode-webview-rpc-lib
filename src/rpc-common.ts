@@ -61,7 +61,7 @@ export abstract class RpcCommon implements IRpc {
   }
 
   invoke(method: string, params?: any[]): Promise<any> {
-  // TODO: change to something more unique (or check to see if id doesn't alreday exist in this.promiseCallbacks)
+  // TODO: change to something more unique (or check to see if id doesn't already exist in this.promiseCallbacks)
     const id = Math.random();
     const promise = new Promise((resolve, reject) => {
       this.promiseCallbacks.set(id, { resolve: resolve, reject: reject });
@@ -74,6 +74,7 @@ export abstract class RpcCommon implements IRpc {
   handleResponse(message: any): void {
     const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(message.id);
     if (promiseCallbacks) {
+      this.logger.trace(`Handling response for id: ${message.id} message success flag is: ${message.success}`);
       if (message.success) {
         promiseCallbacks.resolve(message.response);
       } else {
@@ -86,6 +87,7 @@ export abstract class RpcCommon implements IRpc {
 
   async handleRequest(message: any): Promise<void> {
     const method: IMethod | undefined = this.methods.get(message.method);
+    this.logger.trace(`Handling request id: ${message.id} method: ${message.method} parameters: ${message.params}`);
     if (method) {
       const func: Function = method.func;
       const thisArg: any = method.thisArg;
@@ -97,7 +99,7 @@ export abstract class RpcCommon implements IRpc {
         }
         this.sendResponse(message.id, response);
       } catch (err) {
-        this.logger.error(`Failed to handle request ${message.command} id: ${message.id} error: ${err.message}`);
+        this.logger.error(`Failed to handle request ${message.command} id: ${message.id} error: ${err}`);
         this.sendResponse(message.id, err, false);
       }
     }
