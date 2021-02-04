@@ -102,7 +102,7 @@ class RpcExamplePanel {
 				});
 			  }
 		};
-		// logger is optional third parameter, implementing interface IChildLogger:
+		// logger is optional second parameter, implementing interface IChildLogger:
 		// https://github.com/SAP/vscode-logging/blob/master/packages/types/api.d.ts#L17
 		// see example on how to initialize it from extension here:
 		// https://github.com/SAP/vscode-logging/blob/master/examples/extension/lib/passing-logger-to-library.js

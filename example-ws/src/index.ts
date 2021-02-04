@@ -17,7 +17,7 @@ const sub = (a: number, b: number): number => {
 wss.on("connection", function connection(ws) {
   console.log("new ws connection");
 
-  // logger is optional third parameter, implementing interface IChildLogger:
+  // logger is optional second parameter, implementing interface IChildLogger:
   // https://github.com/SAP/vscode-logging/blob/master/packages/types/api.d.ts#L17
   const rpc: IRpc = new RpcExtensionWebSockets(ws /*, logger*/);
   rpc.setResponseTimeout(30000);
