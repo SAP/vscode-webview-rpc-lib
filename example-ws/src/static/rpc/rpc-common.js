@@ -39,6 +39,7 @@ export class RpcCommon {
         return promise;
     }
     handleResponse(message) {
+        this.logger.trace(`handleResponse: processing response for id: ${message.id} method: ${message.method} message success flag is: ${message.success}`);
         const promiseCallbacks = this.promiseCallbacks.get(message.id);
         if (promiseCallbacks) {
             if (message.success) {
@@ -52,6 +53,7 @@ export class RpcCommon {
     }
     handleRequest(message) {
         return __awaiter(this, void 0, void 0, function* () {
+            this.logger.trace(`handleRequest: processing request id: ${message.id} method: ${message.method} parameters: ${JSON.stringify(message.params)}`);
             const method = this.methods.get(message.method);
             if (method) {
                 const func = method.func;
@@ -65,6 +67,7 @@ export class RpcCommon {
                     this.sendResponse(message.id, response);
                 }
                 catch (err) {
+                    this.logger.error(`handleRequest: Failed processing request id: ${message.id}`, { error: err });
                     this.sendResponse(message.id, err, false);
                 }
             }

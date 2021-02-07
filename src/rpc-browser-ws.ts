@@ -2,15 +2,21 @@
 // see: https://github.com/microsoft/TypeScript/issues/16577#issuecomment-343610106
 
 import { RpcCommon, IPromiseCallbacks } from "./rpc-common.js";
+import { IChildLogger } from "@vscode-logging/types";
+import { noopLogger } from "./noop-logger";
 
 export class RpcBrowserWebSockets extends RpcCommon {
+  private static readonly className = "RpcBrowserWebSockets";
+  private readonly logger: IChildLogger;
   ws: WebSocket;
 
-  constructor(ws: WebSocket) {
-    super();
+  constructor(ws: WebSocket, logger: IChildLogger = noopLogger) {
+    super(logger.getChildLogger({ label: RpcBrowserWebSockets.className }));
+    this.logger = logger.getChildLogger({ label: RpcBrowserWebSockets.className });
     this.ws = ws;
     this.ws.addEventListener("message", (event) => {
       const message: any = JSON.parse(event.data as string);
+      this.logger.debug(`Event Listener: Received event: ${message.command} id: ${message.id} method: ${message.method} params: ${JSON.stringify(message.params)}`);
       switch (message.command) {
       case "rpc-response":
         this.handleResponse(message);
@@ -27,6 +33,7 @@ export class RpcBrowserWebSockets extends RpcCommon {
     setTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
+        this.logger.warn(`sendRequest: Request ${id} method ${method} has timed out`);
         promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
       }

@@ -5,6 +5,8 @@ let functions = {
 }
 
 const vscode = acquireVsCodeApi();
+// logger is optional third parameter, implementing interface IChildLogger:
+// https://github.com/SAP/vscode-logging/blob/master/packages/types/api.d.ts#L17
 let rpc = new RpcBrowser(window, vscode);
 rpc.registerMethod({func: functions.runFunctionInWebview});
 

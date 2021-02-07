@@ -1,6 +1,7 @@
 // import * as jest from "jest";
 import { RpcMock } from "./rpc-mock";
 import { IRpc } from "../rpc-common";
+import { noopLogger } from "../noop-logger";
 
 let mock1: IRpc = new RpcMock();
 let mock2: IRpc = new RpcMock();
@@ -72,4 +73,9 @@ test("Delayed test", () => {
   return mock2.invoke("longFunc").catch((reason) => {
     expect(reason).toBe("Request timed out");
   });
+});
+
+test("Get child logger returns noopLogger", () => {
+  let logger = noopLogger;
+  expect(logger.getChildLogger()).toEqual(logger);
 });

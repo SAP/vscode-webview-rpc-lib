@@ -1,13 +1,20 @@
 import * as vscode from "vscode";
 import { RpcCommon, IPromiseCallbacks } from "./rpc-common";
+import { IChildLogger } from "@vscode-logging/types";
+import { noopLogger } from "./noop-logger";
 
 export class RpcExtension extends RpcCommon {
+  private static readonly className = "RpcExtension";
+  private readonly logger: IChildLogger;
   webview: vscode.Webview;
 
-  constructor(webview: vscode.Webview) {
-    super();
+
+  constructor(webview: vscode.Webview, logger: IChildLogger = noopLogger) {
+    super(logger.getChildLogger({ label: RpcExtension.className }));
+    this.logger = logger.getChildLogger({ label: RpcExtension.className });
     this.webview = webview;
     this.webview.onDidReceiveMessage(message => {
+      this.logger.debug(`Event Listener: Received event: ${message.command} id: ${message.id} method: ${message.method} params: ${JSON.stringify(message.params)}`);
       switch (message.command) {
       case "rpc-response":
         this.handleResponse(message);
@@ -24,6 +31,7 @@ export class RpcExtension extends RpcCommon {
     setTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
+        this.logger.warn(`sendRequest: Request ${id} method ${method} has timed out`);
         promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
       }
