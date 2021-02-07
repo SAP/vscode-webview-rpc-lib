@@ -29,12 +29,12 @@ describe("Logger tests", () => {
     expect(trace).toHaveBeenCalledTimes(2);
     expect(trace).toHaveBeenCalledWith(
       expect.stringMatching(
-        /Handling request id: \d\.\d+ method: sum parameters: 1,2/
+        /handleRequest: processing request id: \d\.\d+ method: sum parameters: 1,2/
       )
     );
     expect(trace).toHaveBeenCalledWith(
       expect.stringMatching(
-        /Handling response for id: \d\.\d+ message success flag is: true/
+        /handleResponse: processing response for id: \d\.\d+ message success flag is: true/
       )
     );
   });
@@ -79,20 +79,19 @@ describe("Logger tests", () => {
     
     expect(trace).toHaveBeenCalledWith(
       expect.stringMatching(
-        /Handling request id: \d\.\d+ method: bad parameters: 1,0/
+        /handleRequest: processing request id: \d\.\d+ method: bad parameters: 1,0/
       )
     );
 
     expect(trace).toHaveBeenCalledWith(
       expect.stringMatching(
-        /Handling response for id: \d\.\d+ message success flag is: false/
+        /handleResponse: processing response for id: \d\.\d+ message success flag is: false/
       )
     );
 
-    expect(error).toHaveBeenCalledTimes(1);
-    expect(error).toHaveBeenCalledWith(expect.stringMatching(/Failed to handle request rpc-request id: \d\.\d+ error: bad parameter type/));
+    expect(error).toHaveBeenCalledWith(expect.stringMatching(/handleRequest: Failed processing request rpc-request id: \d\.\d+/), {"error": "bad parameter type"});
 
-    expect(warn).toHaveBeenCalledWith(expect.stringMatching(/Message id \d\.\d+ rejected, response: bad parameter type/));
+    expect(warn).toHaveBeenCalledWith(expect.stringMatching(/handleResponse: Message id \d\.\d+ rejected, response: bad parameter type/));
 
   });
 });

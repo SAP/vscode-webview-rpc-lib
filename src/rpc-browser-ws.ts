@@ -7,13 +7,15 @@ import { noopLogger } from "./noop-logger";
 
 export class RpcBrowserWebSockets extends RpcCommon {
   ws: WebSocket;
+  logger: IChildLogger;
 
   constructor(ws: WebSocket, logger: IChildLogger = noopLogger) {
     super(logger);
+    this.logger = logger;
     this.ws = ws;
     this.ws.addEventListener("message", (event) => {
       const message: any = JSON.parse(event.data as string);
-      this.logger.debug(`Received event: ${message.command} id: ${message.id} method: ${message.method} params: ${message.params}`);
+      this.logger.debug(`Event Listener: Received event: ${message.command} id: ${message.id} method: ${message.method} params: ${message.params}`);
       switch (message.command) {
       case "rpc-response":
         this.handleResponse(message);
@@ -30,7 +32,7 @@ export class RpcBrowserWebSockets extends RpcCommon {
     setTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
-        this.logger.warn(`Request ${id} method ${method} has timed out`);
+        this.logger.warn(`sendRequest: Request ${id} method ${method} has timed out`);
         promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
       }
