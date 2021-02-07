@@ -6,12 +6,14 @@ import { IChildLogger } from "@vscode-logging/types";
 import { noopLogger } from "./noop-logger";
 
 export class RpcBrowserWebSockets extends RpcCommon {
+  private static readonly className = "RpcBrowserWebSockets";
+
   ws: WebSocket;
   logger: IChildLogger;
 
   constructor(ws: WebSocket, logger: IChildLogger = noopLogger) {
-    super(logger);
-    this.logger = logger;
+    super(logger.getChildLogger({ label: RpcBrowserWebSockets.className }));
+    this.logger = logger.getChildLogger({ label: RpcBrowserWebSockets.className });
     this.ws = ws;
     this.ws.addEventListener("message", (event) => {
       const message: any = JSON.parse(event.data as string);

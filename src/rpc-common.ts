@@ -36,7 +36,7 @@ export abstract class RpcCommon implements IRpc {
   constructor(logger: IChildLogger) {
     this.promiseCallbacks = new Map();
     this.methods = new Map();
-    this.baseLogger = logger.getChildLogger({ label: "Rpc-common" });
+    this.baseLogger = logger.getChildLogger({ label: "RpcCommon" });
     this.registerMethod({ func: this.listLocalMethods, thisArg: this });
   }
 

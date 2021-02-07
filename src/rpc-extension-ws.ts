@@ -4,12 +4,14 @@ import { IChildLogger } from "@vscode-logging/types";
 import { noopLogger } from "./noop-logger";
 
 export class RpcExtensionWebSockets extends RpcCommon {
+  private static readonly className = "RpcExtensionWebSockets";
+
   ws: WebSocket;
   logger: IChildLogger;
 
   constructor(ws: WebSocket, logger: IChildLogger = noopLogger) {
-    super(logger);
-    this.logger = logger;
+    super(logger.getChildLogger({ label: RpcExtensionWebSockets.className }));
+    this.logger = logger.getChildLogger({ label: RpcExtensionWebSockets.className });
     this.ws = ws;
     this.ws.on("message", message => {
       // assuming message is a stringified JSON

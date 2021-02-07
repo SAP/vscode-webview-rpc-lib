@@ -8,13 +8,15 @@ import { IChildLogger } from "@vscode-logging/types";
 import { noopLogger } from "./noop-logger";
 
 export class RpcBrowser extends RpcCommon {
+  private static readonly className = "RpcBrowser";
+
   window: Window;
   vscode: Webview;
   logger: IChildLogger;
 
   constructor(window: Window, vscode: Webview, logger: IChildLogger = noopLogger) {
-    super(logger);
-    this.logger = logger;
+    super(logger.getChildLogger({ label: RpcBrowser.className }));
+    this.logger = logger.getChildLogger({ label: RpcBrowser.className });
     this.window = window;
     this.vscode = vscode;
     this.window.addEventListener("message", (event) => {
