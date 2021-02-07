@@ -5,9 +5,8 @@ import { noopLogger } from "./noop-logger";
 
 export class RpcExtensionWebSockets extends RpcCommon {
   private static readonly className = "RpcExtensionWebSockets";
-
+  private readonly logger: IChildLogger;
   ws: WebSocket;
-  logger: IChildLogger;
 
   constructor(ws: WebSocket, logger: IChildLogger = noopLogger) {
     super(logger.getChildLogger({ label: RpcExtensionWebSockets.className }));

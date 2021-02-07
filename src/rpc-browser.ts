@@ -9,10 +9,9 @@ import { noopLogger } from "./noop-logger";
 
 export class RpcBrowser extends RpcCommon {
   private static readonly className = "RpcBrowser";
-
+  private readonly logger: IChildLogger;
   window: Window;
   vscode: Webview;
-  logger: IChildLogger;
 
   constructor(window: Window, vscode: Webview, logger: IChildLogger = noopLogger) {
     super(logger.getChildLogger({ label: RpcBrowser.className }));

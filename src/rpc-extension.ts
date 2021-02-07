@@ -5,9 +5,8 @@ import { noopLogger } from "./noop-logger";
 
 export class RpcExtension extends RpcCommon {
   private static readonly className = "RpcExtension";
-
+  private readonly logger: IChildLogger;
   webview: vscode.Webview;
-  logger: IChildLogger;
 
 
   constructor(webview: vscode.Webview, logger: IChildLogger = noopLogger) {

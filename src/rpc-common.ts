@@ -29,7 +29,7 @@ export abstract class RpcCommon implements IRpc {
   abstract sendResponse(id: number, response: any, success?: boolean): void;
   protected promiseCallbacks: Map<number, IPromiseCallbacks>; // promise resolve and reject callbacks that are called when returning from remote
   protected methods: Map<string, IMethod>;
-  private baseLogger: IChildLogger;
+  private readonly baseLogger: IChildLogger;
   // TODO: timeouts do not make sense for user interactions. consider not using timeouts by default
   protected timeout: number = 3600000; // timeout for response from remote in milliseconds
 
