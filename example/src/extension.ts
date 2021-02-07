@@ -106,7 +106,7 @@ class RpcExamplePanel {
 		// https://github.com/SAP/vscode-logging/blob/master/packages/types/api.d.ts#L17
 		// see example on how to initialize it from extension here:
 		// https://github.com/SAP/vscode-logging/blob/master/examples/extension/lib/passing-logger-to-library.js
-		this._rpc = new RpcExtension(this._panel.webview /*, logger*/);
+		this._rpc = new RpcExtension(this._panel.webview);
 		this._rpc.registerMethod({ func: functions.showMessage });
 
 		// Set the webview's initial html content

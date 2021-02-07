@@ -22,7 +22,7 @@
             ws.onopen = (event) => {
                 // logger is optional second parameter, implementing interface IChildLogger:
                 // https://github.com/SAP/vscode-logging/blob/master/packages/types/api.d.ts#L17
-                rpc = new RpcBrowserWebSockets(ws /*, logger*/);
+                rpc = new RpcBrowserWebSockets(ws);
                 rpc.setResponseTimeout(30000);
                 rpc.registerMethod({ func: sum });
             };
