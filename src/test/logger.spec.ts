@@ -29,7 +29,7 @@ describe("Logger tests", () => {
     expect(trace).toHaveBeenCalledTimes(2);
     expect(trace).toHaveBeenCalledWith(
       expect.stringMatching(
-        /handleRequest: processing request id: \d\.\d+ method: sum parameters: 1,2/
+        /handleRequest: processing request id: \d\.\d+ method: sum parameters: \[1,2\]/
       )
     );
     expect(trace).toHaveBeenCalledWith(
@@ -79,7 +79,7 @@ describe("Logger tests", () => {
     
     expect(trace).toHaveBeenCalledWith(
       expect.stringMatching(
-        /handleRequest: processing request id: \d\.\d+ method: bad parameters: 1,0/
+        /handleRequest: processing request id: \d\.\d+ method: bad parameters: \[1,0\]/
       )
     );
 
