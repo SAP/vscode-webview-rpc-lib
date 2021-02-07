@@ -5,7 +5,7 @@ import { noopLogger } from "./noop-logger";
 
 export class RpcExtension extends RpcCommon {
   private static readonly className = "RpcExtension";
-  
+
   webview: vscode.Webview;
   logger: IChildLogger;
 
@@ -15,7 +15,7 @@ export class RpcExtension extends RpcCommon {
     this.logger = logger.getChildLogger({ label: RpcExtension.className });
     this.webview = webview;
     this.webview.onDidReceiveMessage(message => {
-      this.logger.debug(`Event Listener: Received event: ${message.command} id: ${message.id} method: ${message.method} params: ${message.params}`);
+      this.logger.debug(`Event Listener: Received event: ${message.command} id: ${message.id} method: ${message.method} params: ${JSON.stringify(message.params)}`);
       switch (message.command) {
       case "rpc-response":
         this.handleResponse(message);

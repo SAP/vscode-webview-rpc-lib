@@ -21,7 +21,7 @@ export class RpcBrowser extends RpcCommon {
     this.vscode = vscode;
     this.window.addEventListener("message", (event) => {
       const message = event.data;
-      this.logger.debug(`Event Listener: Received event: ${message.command} id: ${message.id} method: ${message.method} params: ${message.params}`);
+      this.logger.debug(`Event Listener: Received event: ${message.command} id: ${message.id} method: ${message.method} params: ${JSON.stringify(message.params)}`);
       switch (message.command) {
       case "rpc-response":
         this.handleResponse(message);

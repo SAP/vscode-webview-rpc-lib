@@ -53,7 +53,7 @@ export class RpcCommon {
     }
     handleRequest(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.trace(`handleRequest: processing request id: ${message.id} method: ${message.method} parameters: ${message.params}`);
+            this.logger.trace(`handleRequest: processing request id: ${message.id} method: ${message.method} parameters: ${JSON.stringify(message.params)}`);
             const method = this.methods.get(message.method);
             if (method) {
                 const func = method.func;

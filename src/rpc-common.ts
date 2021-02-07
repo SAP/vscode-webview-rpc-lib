@@ -87,7 +87,7 @@ export abstract class RpcCommon implements IRpc {
 
   async handleRequest(message: any): Promise<void> {
     const method: IMethod | undefined = this.methods.get(message.method);
-    this.baseLogger.trace(`handleRequest: processing request id: ${message.id} method: ${message.method} parameters: ${message.params}`);
+    this.baseLogger.trace(`handleRequest: processing request id: ${message.id} method: ${message.method} parameters: ${JSON.stringify(message.params)}`);
     if (method) {
       const func: Function = method.func;
       const thisArg: any = method.thisArg;
