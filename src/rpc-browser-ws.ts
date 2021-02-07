@@ -16,7 +16,7 @@ export class RpcBrowserWebSockets extends RpcCommon {
     this.ws = ws;
     this.ws.addEventListener("message", (event) => {
       const message: any = JSON.parse(event.data as string);
-      this.logger.debug(`Event Listener: Received event: ${message.command} id: ${message.id} method: ${message.method} params: ${JSON.stringify(message.params)}`);
+      this.logger.debug(`Event Listener: Received event: ${JSON.stringify(message)}`);
       switch (message.command) {
       case "rpc-response":
         this.handleResponse(message);
