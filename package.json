@@ -52,7 +52,7 @@
     "coveralls": "3.1.0",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^6.8.0",
-    "husky": "4.3.8",
+    "husky": "5.1.1",
     "jest": "^26.6.3",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.2.0",
