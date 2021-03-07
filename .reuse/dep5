@@ -4,5 +4,5 @@ Upstream-Contact: Rima Sirich <rima.sirich@sap.com>
 Source: https://github.com/SAP/vscode-webview-rpc-lib
 
 Files: *
-Copyright: 2019-2020 SAP SE or an SAP affiliate company and yeoman-ui contributors
+Copyright: 2021 SAP SE or an SAP affiliate company and yeoman-ui contributors
 License: Apache-2.0
