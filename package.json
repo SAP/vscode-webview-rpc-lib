@@ -37,7 +37,7 @@
     }
   },
   "dependencies": {
-    "ws": "^7.2.3"
+    "ws": "^8.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "12.1.4",
