@@ -13,7 +13,7 @@ export class RpcBrowser extends RpcCommon {
   vscode: WebviewFrame;
   host: string | undefined;
 
-  constructor(window: Window, vscode: WebviewFrame, logger: IChildLogger = noopLogger, host?: string) {
+  constructor(window: Window, vscode: WebviewFrame, host?: string | undefined, logger: IChildLogger = noopLogger) {
     super(logger.getChildLogger({ label: RpcBrowser.className }));
     this.logger = logger.getChildLogger({ label: RpcBrowser.className });
     this.window = window;
