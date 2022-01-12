@@ -13,12 +13,12 @@ export class RpcBrowser extends RpcCommon {
   vscode: WebviewFrame;
   host: string | undefined;
 
-  constructor(window: Window, vscode: WebviewFrame, host?: string | undefined, logger: IChildLogger = noopLogger) {
+  constructor(window: Window, vscode: WebviewFrame, logger: IChildLogger = noopLogger) {
     super(logger.getChildLogger({ label: RpcBrowser.className }));
     this.logger = logger.getChildLogger({ label: RpcBrowser.className });
     this.window = window;
     this.vscode = vscode;
-    this.host = host;
+    this.host = undefined;
     this.window.addEventListener("message", (event) => {
       const message = event.data;
       this.logger.debug(`Event Listener: Received event: ${JSON.stringify(message)}`);
@@ -31,6 +31,10 @@ export class RpcBrowser extends RpcCommon {
         break;
       }
     });
+  }
+
+  setHost(host: string) {
+    this.host = host;
   }
 
   sendRequest(id: number, method: string, params?: any[]) {
