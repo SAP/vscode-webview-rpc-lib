@@ -3,7 +3,6 @@
 */
 
 import { RpcCommon, IPromiseCallbacks } from "./rpc-common.js";
-import { Webview } from "vscode";
 import { IChildLogger } from "@vscode-logging/types";
 import { noopLogger } from "./noop-logger";
 
@@ -11,13 +10,15 @@ export class RpcBrowser extends RpcCommon {
   private static readonly className = "RpcBrowser";
   private readonly logger: IChildLogger;
   window: Window;
-  vscode: Webview;
+  vscode: WebviewFrame;
+  host: string | undefined;
 
-  constructor(window: Window, vscode: Webview, logger: IChildLogger = noopLogger) {
+  constructor(window: Window, vscode: WebviewFrame, logger: IChildLogger = noopLogger) {
     super(logger.getChildLogger({ label: RpcBrowser.className }));
     this.logger = logger.getChildLogger({ label: RpcBrowser.className });
     this.window = window;
     this.vscode = vscode;
+    this.host = undefined;
     this.window.addEventListener("message", (event) => {
       const message = event.data;
       this.logger.debug(`Event Listener: Received event: ${JSON.stringify(message)}`);
@@ -30,6 +31,10 @@ export class RpcBrowser extends RpcCommon {
         break;
       }
     });
+  }
+
+  setHost(host: string) {
+    this.host = host;
   }
 
   sendRequest(id: number, method: string, params?: any[]) {
@@ -48,7 +53,7 @@ export class RpcBrowser extends RpcCommon {
       id: id,
       method: method,
       params: params
-    });
+    }, this.host);
   }
 
   sendResponse(id: number, response: any, success: boolean = true): void {
@@ -57,6 +62,10 @@ export class RpcBrowser extends RpcCommon {
       id: id,
       response: response,
       success: success
-    });
+    }, this.host);
   }
+}
+
+interface WebviewFrame{
+  postMessage(message: any , host?: string): Thenable<boolean>;
 }

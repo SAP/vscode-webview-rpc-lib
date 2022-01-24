@@ -82,6 +82,9 @@ To build for development purpose do the following:
 ## Known Issues
 * Browser library is does not generate d.ts files.
 
+* overcome Cors issue preventing post message to get through and hit the window:
+use the setHost method and sent the host name from the webview - and then the message should get through.
+
 ## How to obtain support
 * To get more help, support and information please open a github issue.
 ## Contributing
