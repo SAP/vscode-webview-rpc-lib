@@ -7,6 +7,7 @@
 [![dependentbot](https://api.dependabot.com/badges/status?host=github&repo=SAP/vscode-webview-rpc-lib)](https://dependabot.com/)
 
 # vscode-webview-rpc-lib
+
 ## Description
 Provides a conventient way to communicate between VSCode extension and its webviews. Use RPC calls to invoke functions on the webview, receive callbacks and vice versa.
 
