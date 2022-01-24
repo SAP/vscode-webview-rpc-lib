@@ -14,8 +14,10 @@ Provides a conventient way to communicate between VSCode extension and its webvi
 ## Requirements
 You need to have [node.js](https://www.npmjs.com/package/node) installed on your machine.
 Also, to use this library, you need to run it inside a VSCode extension using [VSCode](https://code.visualstudio.com/) or [Theia](https://www.theia-ide.org/).
+
 ## How to use
 *An example of using this libary can be seen under the "example" folder.*
+
 ### Installation
 * Create VSCode extension with a Webview. To create your extension go to https://code.visualstudio.com/api/extension-guides/webview.
 * Install using npm
