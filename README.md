@@ -7,14 +7,17 @@
 [![dependentbot](https://api.dependabot.com/badges/status?host=github&repo=SAP/vscode-webview-rpc-lib)](https://dependabot.com/)
 
 # vscode-webview-rpc-lib
+
 ## Description
 Provides a conventient way to communicate between VSCode extension and its webviews. Use RPC calls to invoke functions on the webview, receive callbacks and vice versa.
 
 ## Requirements
 You need to have [node.js](https://www.npmjs.com/package/node) installed on your machine.
 Also, to use this library, you need to run it inside a VSCode extension using [VSCode](https://code.visualstudio.com/) or [Theia](https://www.theia-ide.org/).
+
 ## How to use
 *An example of using this libary can be seen under the "example" folder.*
+
 ### Installation
 * Create VSCode extension with a Webview. To create your extension go to https://code.visualstudio.com/api/extension-guides/webview.
 * Install using npm
@@ -81,6 +84,9 @@ To build for development purpose do the following:
 
 ## Known Issues
 * Browser library is does not generate d.ts files.
+
+* overcome Cors issue preventing post message to get through and hit the window:
+use the setHost method and sent the host name from the webview - and then the message should get through.
 
 ## How to obtain support
 * To get more help, support and information please open a github issue.
