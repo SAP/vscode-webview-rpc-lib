@@ -5,7 +5,7 @@
 import { RpcCommon, IPromiseCallbacks } from "./rpc-common.js";
 import { Webview } from "vscode";
 import { IChildLogger } from "@vscode-logging/types";
-import { noopLogger } from "./noop-logger";
+import { noopLogger } from "./noop-logger.js";
 
 export class RpcBrowser extends RpcCommon {
   private static readonly className = "RpcBrowser";
