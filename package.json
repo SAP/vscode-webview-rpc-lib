@@ -45,7 +45,7 @@
     "@types/jest": "^26.0.20",
     "@types/node": "^15.0.1",
     "@types/vscode": "^1.44.0",
-    "@types/ws": "^7.4.0",
+    "@types/ws": "^8.2.2",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
     "@vscode-logging/types": "^0.1.3",
