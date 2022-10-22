@@ -95,3 +95,4 @@ Contributing information can be found in the [CONTRIBUTING.md](CONTRIBUTING.md) 
 
 ## To-Do (upcoming changes)
 * remove the need to decalre exposed functions
+
