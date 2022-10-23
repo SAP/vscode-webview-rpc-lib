@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/webview-rpc",
-  "version": "0.3.1",
+  "version": "0.4.1",
   "description": "An RPC library for VSCode WebViews",
   "repository": {
     "type": "git",
