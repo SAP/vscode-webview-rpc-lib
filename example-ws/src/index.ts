@@ -23,7 +23,7 @@ wss.on("connection", function connection(ws) {
   rpc.setResponseTimeout(30000);
   rpc.registerMethod({func: sub});
 
-  rpc.invoke("sum", [1,2]).then((val) => {
+  rpc.invoke("sum", ...[1,2]).then((val) => {
     console.log(`sum is ${val}`);
   }).catch((err) => {
     console.error(err);

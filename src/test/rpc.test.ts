@@ -3,8 +3,8 @@ import { RpcMock } from "./rpc-mock";
 import { IRpc } from "../rpc-common";
 import { noopLogger } from "../noop-logger";
 
-let mock1: IRpc = new RpcMock();
-let mock2: IRpc = new RpcMock();
+const mock1: IRpc = new RpcMock();
+const mock2: IRpc = new RpcMock();
 (mock1 as RpcMock).setPeer(mock2 as RpcMock);
 (mock2 as RpcMock).setPeer(mock1 as RpcMock);
 
@@ -32,7 +32,7 @@ test("One large test", () => {
   mock1.registerMethod({func: sum});
   const param1: number = 1;
   const param2: number = 2;
-  mock2.invoke("sum", [param1, param2]).then((value) => {
+  mock2.invoke("sum", param1, param2).then((value) => {
     console.log(`sum is ${value}`);
     expect(value).toBe(param1 + param2);
   });
@@ -76,6 +76,6 @@ test("Delayed test", () => {
 });
 
 test("Get child logger returns noopLogger", () => {
-  let logger = noopLogger;
+  const logger = noopLogger;
   expect(logger.getChildLogger()).toEqual(logger);
 });

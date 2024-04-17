@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.deactivate = exports.activate = void 0;
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const path = require("path");
@@ -43,36 +44,8 @@ exports.activate = activate;
  * Manages cat coding webview panels
  */
 class RpcExamplePanel {
-    constructor(panel, extensionPath) {
-        this._disposables = [];
-        this._panel = panel;
-        this._extensionPath = extensionPath;
-        let functions = {
-            showMessage: (message) => {
-                let _vscode = vscode;
-                return new Promise((resolve, reject) => {
-                    _vscode.window.showInformationMessage(message, "yes", "no").then((res) => {
-                        resolve(res);
-                    });
-                });
-            }
-        };
-        this._rpc = new rpc_extension_1.RpcExtension(this._panel.webview);
-        this._rpc.registerMethod({ func: functions.showMessage });
-        // Set the webview's initial html content
-        this.update(this._panel.webview);
-        // Listen for when the panel is disposed
-        // This happens when the user closes the panel or when the panel is closed programatically
-        this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
-        // Update the content based on view changes
-        this._panel.onDidChangeViewState(e => {
-            if (this._panel.visible) {
-                this.update(this._panel.webview);
-            }
-        }, null, this._disposables);
-    }
     static sendMessage() {
-        this.currentPanel._rpc.invoke("runFunctionInWebview", ["message from extension"]).then((response => {
+        this.currentPanel._rpc.invoke("runFunctionInWebview", "message from extension").then((response => {
             vscode.window.showInformationMessage(response);
         }));
     }
@@ -94,6 +67,38 @@ class RpcExamplePanel {
     }
     static revive(panel, extensionPath) {
         RpcExamplePanel.currentPanel = new RpcExamplePanel(panel, extensionPath);
+    }
+    constructor(panel, extensionPath) {
+        this._disposables = [];
+        this._panel = panel;
+        this._extensionPath = extensionPath;
+        let functions = {
+            showMessage: (message) => {
+                let _vscode = vscode;
+                return new Promise((resolve, reject) => {
+                    _vscode.window.showInformationMessage(message, "yes", "no").then((res) => {
+                        resolve(res);
+                    });
+                });
+            }
+        };
+        // logger is optional second parameter, implementing interface IChildLogger:
+        // https://github.com/SAP/vscode-logging/blob/master/packages/types/api.d.ts#L17
+        // see example on how to initialize it from extension here:
+        // https://github.com/SAP/vscode-logging/blob/master/examples/extension/lib/passing-logger-to-library.js
+        this._rpc = new rpc_extension_1.RpcExtension(this._panel.webview);
+        this._rpc.registerMethod({ func: functions.showMessage });
+        // Set the webview's initial html content
+        this.update(this._panel.webview);
+        // Listen for when the panel is disposed
+        // This happens when the user closes the panel or when the panel is closed programatically
+        this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
+        // Update the content based on view changes
+        this._panel.onDidChangeViewState(e => {
+            if (this._panel.visible) {
+                this.update(this._panel.webview);
+            }
+        }, null, this._disposables);
     }
     dispose() {
         RpcExamplePanel.currentPanel = undefined;

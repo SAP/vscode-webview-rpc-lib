@@ -1,5 +1,5 @@
 export interface IRpc {
-  invoke(method: string, params: any): Promise<any>;
+  invoke(method: string, ...params: any[]): Promise<any>;
   sendRequest(id: number, method: string, params?: any[]): void;
   sendResponse(id: number, response: any, success?: boolean): void;
   handleResponse(message: any): void;
@@ -53,7 +53,7 @@ export abstract class RpcCommon implements IRpc {
     return this.invoke("listLocalMethods");
   }
 
-  invoke(method: string, params?: any[]): Promise<any> {
+  invoke(method: string, ...params: any[]): Promise<any> {
   // TODO: change to something more unique (or check to see if id doesn't alreday exist in this.promiseCallbacks)
     const id = Math.random();
     const promise = new Promise((resolve, reject) => {

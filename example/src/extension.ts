@@ -53,7 +53,7 @@ class RpcExamplePanel {
 	private _rpc: RpcExtension;
 
 	public static sendMessage() {
-		this.currentPanel._rpc.invoke("runFunctionInWebview", ["message from extension"]).then((response => {
+		this.currentPanel._rpc.invoke("runFunctionInWebview", "message from extension").then((response => {
 			vscode.window.showInformationMessage(response);
 		}));
 	}

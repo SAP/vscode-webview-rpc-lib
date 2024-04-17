@@ -13,8 +13,8 @@ describe("Logger tests", () => {
   });
 
   it("When logger is not passed noop is used", () => {
-    let rpc1: IRpc = new RpcMock();
-    let rpc2: IRpc = new RpcMock();
+    const rpc1: IRpc = new RpcMock();
+    const rpc2: IRpc = new RpcMock();
     (rpc1 as RpcMock).setPeer(rpc2 as RpcMock);
     (rpc2 as RpcMock).setPeer(rpc1 as RpcMock);
     const trace = jest.spyOn(noopLogger, "trace");
@@ -22,7 +22,7 @@ describe("Logger tests", () => {
     rpc1.registerMethod({ func: sum });
     const param1: number = 1;
     const param2: number = 2;
-    rpc2.invoke("sum", [param1, param2]).then((value) => {
+    rpc2.invoke("sum", param1, param2).then((value) => {
       console.log(`sum is ${value}`);
       expect(value).toBe(param1 + param2);
     });
@@ -41,7 +41,7 @@ describe("Logger tests", () => {
 
   it("When logger is passed it is used", () => {
     const CONSOLE_LOG =  (msg: string, ...args: any[]): void => { console.log(msg, args); };
-    let customLogger: IChildLogger = {
+    const customLogger: IChildLogger = {
       fatal: CONSOLE_LOG,
       error: CONSOLE_LOG,
       warn: CONSOLE_LOG,
@@ -52,8 +52,8 @@ describe("Logger tests", () => {
         return customLogger;
       },
     };
-    let rpc1: IRpc = new RpcMock(customLogger);
-    let rpc2: IRpc = new RpcMock(customLogger);
+    const rpc1: IRpc = new RpcMock(customLogger);
+    const rpc2: IRpc = new RpcMock(customLogger);
     (rpc1 as RpcMock).setPeer(rpc2 as RpcMock);
     (rpc2 as RpcMock).setPeer(rpc1 as RpcMock);
 
@@ -71,7 +71,7 @@ describe("Logger tests", () => {
     rpc1.registerMethod({ func: bad });
     const param1: number = 1;
     const param2: number = 0;
-    rpc2.invoke("bad", [param1, param2]).then((value) => {
+    rpc2.invoke("bad", ...[param1, param2]).then((value) => {
       console.log(`result is is ${value}`);
       expect(value).toBe(param1 + param2);
     }).catch(e => {
