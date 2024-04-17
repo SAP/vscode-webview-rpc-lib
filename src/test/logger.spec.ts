@@ -74,6 +74,8 @@ describe("Logger tests", () => {
     rpc2.invoke("bad", [param1, param2]).then((value) => {
       console.log(`result is is ${value}`);
       expect(value).toBe(param1 + param2);
+    }).catch(e => {
+      expect(e).toBe("bad parameter type");
     });
     expect(trace).toHaveBeenCalledTimes(2);
     

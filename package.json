@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/webview-rpc",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "An RPC library for VSCode WebViews",
   "repository": {
     "type": "git",
@@ -10,7 +10,8 @@
   "author": "Ido Perez",
   "publisher": "SAP",
   "scripts": {
-    "compile": "npm run compile-ext && npm run compile-browser && npm run compile-test",
+    "clean": "rimraf ./out.*",
+    "compile": "npm run clean && npm run compile-ext && npm run compile-browser && npm run compile-test",
     "compile-browser": "rimraf ./out.browser && tsc -p tsconfig.browser.json",
     "compile-ext": "rimraf ./out.ext && tsc -p ./tsconfig.ext.json",
     "compile-test": "rimraf ./out.test && tsc -p tsconfig.test.json",
