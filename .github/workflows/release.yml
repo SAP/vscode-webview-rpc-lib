@@ -1,0 +1,33 @@
+name: Release
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # using `v1` because of: https://github.com/actions/checkout/issues/246
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run ci
+
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create Github Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: sap-devx-webview-rpc-*.tgz
+          fail_on_unmatched_files: true

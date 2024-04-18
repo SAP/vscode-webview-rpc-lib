@@ -10,6 +10,7 @@
   "author": "Ido Perez",
   "publisher": "SAP",
   "scripts": {
+    "ci": "npm run compile && npm run lint && npm run test && npm pack",
     "clean": "rimraf ./out.*",
     "compile": "npm run clean && npm run compile-ext && npm run compile-browser && npm run compile-test",
     "compile-browser": "rimraf ./out.browser && tsc -p tsconfig.browser.json",
