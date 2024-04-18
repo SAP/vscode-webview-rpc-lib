@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as WebSocket from "ws";
 import { IRpc } from "./rpc/rpc-common";
 import { RpcExtensionWebSockets } from "./rpc/rpc-extension-ws";
-import { sanitizeUrl } from '@braintree/sanitize-url';
+import { sanitizeUrl } from "@braintree/sanitize-url";
 
 // web socket server
 const wss = new WebSocket.Server({ port: 8081 }, () => {
