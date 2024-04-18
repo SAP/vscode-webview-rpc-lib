@@ -20,6 +20,3 @@ updates:
       interval: weekly
     commit-message:
       prefix: "chore:"
-    ignore:
-      - paths:
-        - "example*/*"
