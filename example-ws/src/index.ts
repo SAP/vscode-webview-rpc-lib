@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as WebSocket from "ws";
 import { IRpc } from "./rpc/rpc-common";
 import { RpcExtensionWebSockets } from "./rpc/rpc-extension-ws";
-import { sanitizeUrl } from '@braintree/sanitize-url';
+import { sanitizeUrl } from "@braintree/sanitize-url";
 
 // web socket server
 const wss = new WebSocket.Server({ port: 8081 }, () => {
@@ -23,7 +23,7 @@ wss.on("connection", function connection(ws) {
   rpc.setResponseTimeout(30000);
   rpc.registerMethod({func: sub});
 
-  rpc.invoke("sum", [1,2]).then((val) => {
+  rpc.invoke("sum", ...[1,2]).then((val) => {
     console.log(`sum is ${val}`);
   }).catch((err) => {
     console.error(err);

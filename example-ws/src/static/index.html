@@ -31,7 +31,7 @@
             subtractButton.onclick = () => {
                 let param1 = document.getElementById("param1").value;
                 let param2 = document.getElementById("param2").value;
-                rpc.invoke("sub", [Number(param1), Number(param2)]).then((val) => {
+                rpc.invoke("sub", ...[Number(param1), Number(param2)]).then((val) => {
                     document.getElementById("result").value = val;
                     console.log(`sub is ${val}`);
                 });

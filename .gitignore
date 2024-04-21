@@ -63,7 +63,8 @@ typings/
 # next.js build output
 .next
 
-out
+# auto generated folders 
+**/out/
 out.ext
 out.browser
 out.test
