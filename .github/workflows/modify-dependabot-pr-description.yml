@@ -11,13 +11,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ github.head_ref }}
 
       - name: Modify PR description
         run: |
           pr_description=$(git log --format=%B -n 1 | head -n 1)
           modified_description=$(echo "$pr_description" | cut -c 1-80)
+          git config --global user.name "Dependabot"
+          git config --global user.email "dependabot@users.noreply.github.com"
           git commit --amend -m "$modified_description"
           git push --force-with-lease
