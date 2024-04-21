@@ -1,0 +1,28 @@
+name: Modify Dependabot PR Description
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  modify-description:
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Modify PR description
+        run: |
+          pr_description=$(cat $GITHUB_EVENT_PATH | jq -r '.pull_request.body')
+          modified_description=$(echo "$pr_description" | fold -sw 80 -b)
+          echo "MODIFIED_DESCRIPTION<<EOF" >> $GITHUB_ENV
+          echo "$modified_description" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Update PR description
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: update-pull-request-description
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          description: ${{ env.MODIFIED_DESCRIPTION }}
