@@ -55,7 +55,7 @@ function add(a,b) {
 rpc.registerMethod({func: add});
 ```
 ### Usage
-To invoke a method use the *invoke* method on the rpc instance. You can pass a callback that will be invoked once the repsonce recieved.\
+To invoke a method use the *invoke* method on the rpc instance. You can pass a callback that will be invoked once the repsonse recieved.\
 ***For version < 1.x*** :
 ```js
 rpc.invoke("add", [1,2]).then((response)=>{
