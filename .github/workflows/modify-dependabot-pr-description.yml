@@ -14,15 +14,7 @@ jobs:
 
       - name: Modify PR description
         run: |
-          pr_description=$(cat $GITHUB_EVENT_PATH | jq -r '.pull_request.body')
+          pr_description=$(git log --format=%B -n 1 | head -n 1)
           modified_description=$(echo "$pr_description" | cut -c 1-80)
-          echo "MODIFIED_DESCRIPTION<<EOF" >> $GITHUB_ENV
-          echo "$modified_description" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-      - name: Update PR description
-        uses: actions-cool/issues-helper@v3
-        with:
-          actions: update-pull-request-description
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          description: ${{ env.MODIFIED_DESCRIPTION }}
+          git commit --amend -m "$modified_description"
+          git push --force-with-lease
