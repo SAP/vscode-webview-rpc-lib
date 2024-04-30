@@ -5,6 +5,13 @@
 
 version: 2
 updates:
+version: 2
+  pull_request:
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    pull_request_description: "{{ truncate(pull_request_body, 100) }}"
+    
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -20,7 +27,6 @@ updates:
       interval: weekly
     commit-message:
       prefix: "chore:"
-    pull_request_description: "{{ truncate(pull_request_body, 100) }}"
     ignore:
     - dependency-name: "ws"
     - dependency-name: "@types/node"
