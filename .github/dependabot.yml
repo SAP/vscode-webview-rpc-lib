@@ -20,6 +20,7 @@ updates:
       interval: weekly
     commit-message:
       prefix: "chore:"
+    pull_request_description: "{{ truncate(pull_request_body, 100) }}"
     ignore:
     - dependency-name: "ws"
     - dependency-name: "@types/node"
