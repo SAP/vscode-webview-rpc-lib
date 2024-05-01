@@ -18,8 +18,6 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
-    commit-message:
-      prefix: "chore:"
     ignore:
     - dependency-name: "ws"
     - dependency-name: "@types/node"
