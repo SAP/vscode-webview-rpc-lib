@@ -2,7 +2,7 @@
  see: https://github.com/microsoft/TypeScript/issues/16577#issuecomment-343610106
 */
 
-import { RpcCommon, IPromiseCallbacks } from "./rpc-common.js";
+import { RpcCommon, IPromiseCallbacks, MessageBody, RpcCommand } from "./rpc-common.js";
 import { IChildLogger } from "@vscode-logging/types";
 import { noopLogger } from "./noop-logger.js";
 
@@ -20,13 +20,13 @@ export class RpcBrowser extends RpcCommon {
     this.vscode = vscode;
     this.host = undefined;
     this.window.addEventListener("message", (event) => {
-      const message = event.data;
+      const message: MessageBody = event.data;
       this.logger.debug(`Event Listener: Received event: ${JSON.stringify(message)}`);
       switch (message.command) {
-      case "rpc-response":
+      case RpcCommand.RPC_RESPONSE:
         this.handleResponse(message);
         break;
-      case "rpc-request":
+      case RpcCommand.RPC_REQUEST:
         this.handleRequest(message);
         break;
       }
@@ -49,7 +49,7 @@ export class RpcBrowser extends RpcCommon {
 
     // TODO: find an alternative to appending vscode to the global scope (perhaps providing vscode as parameter to constructor)
     this.vscode.postMessage({
-      command: "rpc-request",
+      command: RpcCommand.RPC_REQUEST,
       id: id,
       method: method,
       params: params
@@ -58,7 +58,7 @@ export class RpcBrowser extends RpcCommon {
 
   sendResponse(id: number, response: any, success: boolean = true): void {
     this.vscode.postMessage({
-      command: "rpc-response",
+      command: RpcCommand.RPC_RESPONSE,
       id: id,
       response: response,
       success: success
@@ -67,5 +67,5 @@ export class RpcBrowser extends RpcCommon {
 }
 
 interface WebviewFrame{
-  postMessage(message: any , host?: string): Thenable<boolean>;
+  postMessage(message: MessageBody, host?: string): Thenable<boolean>;
 }

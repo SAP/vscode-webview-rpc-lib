@@ -7,10 +7,11 @@
 			"es6"
 		],
 		"sourceMap": true,
-		"rootDir": "src"
+		"rootDir": "src",
+		"skipLibCheck": true,
 	},
 	"exclude": [
 		"node_modules",
-		".vscode-test"
+		".vscode-test",
 	]
 }

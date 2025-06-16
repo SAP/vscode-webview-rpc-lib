@@ -3,7 +3,7 @@
 
 import { IChildLogger } from "@vscode-logging/types";
 import { noopLogger } from "../noop-logger";
-import { RpcCommon, IPromiseCallbacks } from "../rpc-common";
+import { RpcCommon, IPromiseCallbacks, ResponseBody, RpcCommand, MessageBody, RequestBody } from "../rpc-common";
 
 export class RpcMock extends RpcCommon {
   peer: RpcMock | undefined;
@@ -27,22 +27,22 @@ export class RpcMock extends RpcCommon {
     }, this.timeout);
 
     // TODO: find an alternative to appending vscode to the global scope (perhaps providing vscode as parameter to constructor)
-    const requestBody: any = {
-      command: "rpc-request",
-      id: id,
-      method: method,
-      params: params
+    const requestBody: RequestBody = {
+      command: RpcCommand.RPC_REQUEST,
+      id,
+      method,
+      params,
     };
 
     this.send(JSON.stringify(requestBody));
   }
 
   sendResponse(id: number, response: any, success: boolean = true): void {
-    const responseBody: any = {
-      command: "rpc-response",
-      id: id,
-      response: response,
-      success: success
+    const responseBody: ResponseBody = {
+      command: RpcCommand.RPC_RESPONSE,
+      id,
+      response,
+      success,
     };
 
     this.send(JSON.stringify(responseBody));
@@ -55,12 +55,12 @@ export class RpcMock extends RpcCommon {
   }
 
   receive(message: string) {
-    const messageObject: any = JSON.parse(message);
+    const messageObject: MessageBody = JSON.parse(message);
     switch (messageObject.command) {
-    case "rpc-response":
+    case RpcCommand.RPC_RESPONSE:
       this.handleResponse(messageObject);
       break;
-    case "rpc-request":
+    case RpcCommand.RPC_REQUEST:
       this.handleRequest(messageObject);
       break;
     }

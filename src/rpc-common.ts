@@ -4,13 +4,12 @@ export interface IRpc {
   invoke(method: string, ...params: any[]): Promise<any>;
   sendRequest(id: number, method: string, params?: any[]): void;
   sendResponse(id: number, response: any, success?: boolean): void;
-  handleResponse(message: any): void;
-  handleRequest(message: any): void;
   registerMethod(method: IMethod): void;
   unregisterMethod(method: IMethod): void;
   setResponseTimeout(timeout: number): void;
   listLocalMethods(): string[];
   listRemoteMethods(): Promise<string[]>;
+  remote: Record<string, (...args: any[]) => Promise<any>>;
 }
 
 export interface IPromiseCallbacks {
@@ -24,16 +23,48 @@ export interface IMethod {
   name?: string;
 }
 
+export const enum RpcCommand {
+  RPC_REQUEST = "rpc-request",
+  RPC_RESPONSE = "rpc-response",
+}
+
+export type MessageBody = RequestBody | ResponseBody;
+
+export type RequestBody = {
+  command: RpcCommand.RPC_REQUEST;
+  id: number;
+  method: string;
+  params?: any[];
+}
+
+export type ResponseBody = {
+  command: RpcCommand.RPC_RESPONSE;
+  id: number;
+  response: any;
+  success?: boolean;
+}
+
 export abstract class RpcCommon implements IRpc {
   abstract sendRequest(id: number, method: string, params?: any[]): void;
   abstract sendResponse(id: number, response: any, success?: boolean): void;
   protected promiseCallbacks: Map<number, IPromiseCallbacks>; // promise resolve and reject callbacks that are called when returning from remote
   protected methods: Map<string, IMethod>;
+  public remote: { [name: string]: (...args: any[]) => Promise<any> };
+
   private readonly baseLogger: IChildLogger;
   // TODO: timeouts do not make sense for user interactions. consider not using timeouts by default
   protected timeout: number = 3600000; // timeout for response from remote in milliseconds
 
   constructor(logger: IChildLogger) {
+    const self = this;
+    this.remote = new Proxy({}, {
+      get(target, methodName) {
+        return (...params: any) => {
+          return self.invoke(methodName.toString(), ...params);
+        };
+      },
+    });
+
     this.promiseCallbacks = new Map();
     this.methods = new Map();
     this.baseLogger = logger.getChildLogger({ label: "RpcCommon" });
@@ -45,11 +76,14 @@ export abstract class RpcCommon implements IRpc {
   }
 
   public registerMethod(method: IMethod): void {
-    this.methods.set((method.name ? method.name : method.func.name), method);
+    const methodName: string = method.name ? method.name : method.func.name;
+    this.methods.set(methodName, method);
   }
 
   public unregisterMethod(method: IMethod): void {
-    this.methods.delete((method.name ? method.name : method.func.name));
+    const methodName: string = method.name ? method.name : method.func.name;
+    this.methods.delete(methodName);
+    delete this.remote[methodName];
   }
 
   public listLocalMethods(): string[] {
@@ -60,8 +94,14 @@ export abstract class RpcCommon implements IRpc {
     return this.invoke("listLocalMethods");
   }
 
-  invoke(method: string, ...params: any[]): Promise<any> {
-  // TODO: change to something more unique (or check to see if id doesn't already exist in this.promiseCallbacks)
+  /**
+   * @ deprecated As a public method. Use rpc.remote.<methodName>(...params) instead
+   * @param method name of the method to invoke 
+   * @param params parameters of the method to invoke
+   * @returns the result of the invoked method (as a promise)
+   */
+  public invoke(method: string, ...params: any[]): Promise<any> {
+    // TODO: change the id to something more unique (or check to see if id doesn't already exist in this.promiseCallbacks)
     const id = Math.random();
     const promise = new Promise((resolve, reject) => {
       this.promiseCallbacks.set(id, { resolve: resolve, reject: reject });
@@ -71,7 +111,7 @@ export abstract class RpcCommon implements IRpc {
     return promise;
   }
 
-  handleResponse(message: any): void {
+  protected handleResponse(message: ResponseBody): void {
     const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(message.id);
     if (promiseCallbacks) {
       this.baseLogger.trace(`handleResponse: processing response for id: ${message.id} message success flag is: ${message.success}`);
@@ -85,7 +125,7 @@ export abstract class RpcCommon implements IRpc {
     }
   }
 
-  async handleRequest(message: any): Promise<void> {
+  protected async handleRequest(message: RequestBody): Promise<void> {
     const method: IMethod | undefined = this.methods.get(message.method);
     this.baseLogger.trace(`handleRequest: processing request id: ${message.id} method: ${message.method} parameters: ${JSON.stringify(message.params)}`);
     if (method) {

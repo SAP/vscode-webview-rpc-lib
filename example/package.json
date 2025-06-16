@@ -18,11 +18,11 @@
 		"commands": [
 			{
 				"command": "extension.openwebview",
-				"title": "Open Webview"
+				"title": "Webview RPC: Open Webview"
 			},
 			{
 				"command": "extension.sendMessage",
-				"title": "Send Message to Webview"
+				"title": "Webview RPC: Send Message to Webview"
 			}
 		]
 	},
@@ -30,21 +30,19 @@
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
-		"copy": "rimraf ./out/media && copyfiles -u 1 ./src/media/** ./out/",
 		"pretest": "npm run compile"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
 		"@types/node": "^18.11.1",
-		"@types/vscode": "^1.44.0",
-		"copyfiles": "^2.4.1",
+		"@types/vscode": "^1.83.3",
 		"glob": "^7.1.6",
 		"mocha": "^10.4.0",
 		"rimraf": "^5.0.5",
-		"typescript": "^4.2.3",
+		"typescript": "^5.4.5",
 		"vscode-test": "^1.6.1"
 	},
 	"dependencies": {
-		"@sap-devx/webview-rpc": "1.0.0"
+		"@sap-devx/webview-rpc": "^1.0.0"
 	}
 }

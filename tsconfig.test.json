@@ -8,6 +8,6 @@
 		"rootDir": "src",
 		"strict": true
 	},
-	"exclude": ["node_modules", "example", "example-ws"],
+	"exclude": ["node_modules", "example", "example-websockets"],
 	"include": ["src/rpc-common.ts", "src/test/*.ts"]
 }

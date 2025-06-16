@@ -1,26 +1,27 @@
-import { RpcCommon, IPromiseCallbacks } from "./rpc-common";
-import * as WebSocket from "ws";
+import { RpcCommon, IPromiseCallbacks, MessageBody, RpcCommand, RequestBody, ResponseBody } from "./rpc-common";
+import * as WebSocketx from "ws";
 import { IChildLogger } from "@vscode-logging/types";
 import { noopLogger } from "./noop-logger";
 
 export class RpcExtensionWebSockets extends RpcCommon {
   private static readonly className = "RpcExtensionWebSockets";
   private readonly logger: IChildLogger;
-  ws: WebSocket;
+  ws: WebSocketx.WebSocket;
 
-  constructor(ws: WebSocket, logger: IChildLogger = noopLogger) {
+  constructor(ws: WebSocketx.WebSocket, logger: IChildLogger = noopLogger) {
     super(logger.getChildLogger({ label: RpcExtensionWebSockets.className }));
     this.logger = logger.getChildLogger({ label: RpcExtensionWebSockets.className });
     this.ws = ws;
     this.ws.on("message", message => {
       // assuming message is a stringified JSON
-      const messageObject: any = JSON.parse(message as string);
-      this.logger.debug(`Event Listener: Received event: ${message as string}`);
+      const messageAsString: string = message.toString();
+      const messageObject: MessageBody = JSON.parse(messageAsString);
+      this.logger.debug(`Event Listener: Received event: ${messageAsString}`);
       switch (messageObject.command) {
-      case "rpc-response":
+      case RpcCommand.RPC_RESPONSE:
         this.handleResponse(messageObject);
         break;
-      case "rpc-request":
+      case RpcCommand.RPC_REQUEST:
         this.handleRequest(messageObject);
         break;
       }
@@ -38,8 +39,8 @@ export class RpcExtensionWebSockets extends RpcCommon {
       }
     }, this.timeout);
 
-    const requestObject: any = {
-      command: "rpc-request",
+    const requestObject: RequestBody = {
+      command: RpcCommand.RPC_REQUEST,
       id: id,
       method: method,
       params: params
@@ -49,8 +50,8 @@ export class RpcExtensionWebSockets extends RpcCommon {
   }
 
   sendResponse(id: number, response: any, success: boolean = true): void {
-    const responseObject: any = {
-      command: "rpc-response",
+    const responseObject: ResponseBody = {
+      command: RpcCommand.RPC_RESPONSE,
       id: id,
       response: response,
       success: success

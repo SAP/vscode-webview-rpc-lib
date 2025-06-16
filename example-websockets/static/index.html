@@ -2,10 +2,10 @@
 
 <head>
     <title>RPC WebSockets Example</title>
-    <script type="module" src="./rpc/rpc-common.js"></script>
-    <script type="module" src="./rpc/rpc-browser-ws.js"></script>
+    <script type="module" src="/rpc/rpc-common.js"></script>
+    <script type="module" src="/rpc/rpc-browser-ws.js"></script>
     <script type="module">
-        import { RpcBrowserWebSockets } from "./rpc/rpc-browser-ws.js";
+        import { RpcBrowserWebSockets } from "/rpc/rpc-browser-ws.js";
 
         window.onload = () => {
             let rpc;
@@ -28,15 +28,13 @@
             };
 
             const subtractButton = document.getElementById("subtractButton");
-            subtractButton.onclick = () => {
+            subtractButton.onclick = async () => {
                 let param1 = document.getElementById("param1").value;
                 let param2 = document.getElementById("param2").value;
-                rpc.invoke("sub", ...[Number(param1), Number(param2)]).then((val) => {
-                    document.getElementById("result").value = val;
-                    console.log(`sub is ${val}`);
-                });
+                let val = await rpc.remote.sub(Number(param1), Number(param2));
+                document.getElementById("result").value = val;
+                console.log(`sub(${param1},${param2}) was evaluated on the server and the result is ${val}`);
             }
-
         };
     </script>
 </head>
@@ -48,7 +46,7 @@
         <input id="param1" type="text" value="11" aria-describedby="param1Text"></input><br>
         <label id=param2Text>Second parameter:</label><br>
         <input id="param2" type="text" value="3" aria-describedby="param2Text"></input><br>
-        <input id=subtractButton type="button" value="Subtract()"></input><br>
+        <input id=subtractButton type="button" value="Subtract on server"></input><br>
         <label id=resultText>Result:</label><br>
         <input id="result" type="text" aria-describedby="resultText"></input><br>
     </form>

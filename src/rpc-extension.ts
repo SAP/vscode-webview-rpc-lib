@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { RpcCommon, IPromiseCallbacks } from "./rpc-common";
+import { RpcCommon, IPromiseCallbacks, RpcCommand } from "./rpc-common";
 import { IChildLogger } from "@vscode-logging/types";
 import { noopLogger } from "./noop-logger";
 
@@ -16,10 +16,10 @@ export class RpcExtension extends RpcCommon {
     this.webview.onDidReceiveMessage(message => {
       this.logger.debug(`Event Listener: Received event: ${JSON.stringify(message)}`);
       switch (message.command) {
-      case "rpc-response":
+      case RpcCommand.RPC_RESPONSE:
         this.handleResponse(message);
         break;
-      case "rpc-request":
+      case RpcCommand.RPC_REQUEST:
         this.handleRequest(message);
         break;
       }
@@ -38,19 +38,19 @@ export class RpcExtension extends RpcCommon {
     }, this.timeout);
 
     this.webview.postMessage({
-      command: "rpc-request",
-      id: id,
-      method: method,
-      params: params
+      command: RpcCommand.RPC_REQUEST,
+      id,
+      method,
+      params,
     });
   }
 
   sendResponse(id: number, response: any, success: boolean = true): void {
     this.webview.postMessage({
-      command: "rpc-response",
-      id: id,
-      response: response,
-      success: success
+      command: RpcCommand.RPC_RESPONSE,
+      id,
+      response,
+      success,
     });
   }
 }

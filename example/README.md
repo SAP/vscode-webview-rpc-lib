@@ -1,6 +1,6 @@
-# rpc-example README
+# Webview RPC Example
 
-This is the README for your extension "rpc-example". After writing up a brief description, we recommend including the following sections.
+This extension demonstrates the use of the [@sap-devx/webview-rpc](https://www.npmjs.com/package/@sap-devx/webview-rpc) npm package to send message to and from VS Code [Webviews](https://code.visualstudio.com/api/ux-guidelines/webviews).
 
 ## Features
 

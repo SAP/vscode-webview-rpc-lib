@@ -6,16 +6,17 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"type": "node",
+			"request": "launch",
+			"name": "Run WebSocket Example",
+			"program": "${workspaceFolder}/out/index.js",
+			"runtimeArgs": ["--preserve-symlinks"],
+		},
+		{
 			"type": "chrome",
 			"request": "launch",
 			"name": "Launch Chrome",
 			"url": "http://127.0.0.1:8080/index.html"
-		},
-		{
-			"type": "node",
-			"request": "launch",
-			"name": "Run WebSocket Example",
-			"program": "${workspaceFolder}/out/index.js"
 		}
 	]
 }
