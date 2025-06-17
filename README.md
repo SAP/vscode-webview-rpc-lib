@@ -8,17 +8,21 @@
 # vscode-webview-rpc-lib
 
 ## Description
-Provides a conventient way to communicate between VSCode extension and its webviews. Use RPC calls to invoke functions on the webview, receive callbacks and vice versa.
+This library provides a convenient asynchronous ([promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)-based) request-response wrapper to the unidirectional VS Code [message passing](https://code.visualstudio.com/api/extension-guides/webview#scripts-and-message-passing) mechanism, for communications between [extensions](https://code.visualstudio.com/api) and their [Webviews](https://code.visualstudio.com/api/extension-guides/webview).
+
+This library also contains a [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) implementation for non-VS Code use-cases and for testing purposes. See the [WebSockets example](./example-websockets/) for more information.
 
 ## Requirements
 You need to have [node.js](https://www.npmjs.com/package/node) installed on your machine.
-Also, to use this library, you need to run it inside a VSCode extension using [VSCode](https://code.visualstudio.com/) or [Theia](https://www.theia-ide.org/).
+
+Also, to use this library, you need to run it inside a VS Code extension using [VS Code](https://code.visualstudio.com/) or [Theia](https://www.theia-ide.org/).
 
 ## How to use
-*An example of using this libary can be seen under the "example" folder.*
+*An example of using this library can be seen under the "[example](./example/)" folder.*
 
 ### Installation
-* Create VSCode extension with a Webview. To create your extension go to https://code.visualstudio.com/api/extension-guides/webview.
+* Create a VS Code extension with a Webview. To create your extension see the [Webview extension guide](https://code.visualstudio.com/api/extension-guides/webview).
+
 * Install using npm
     ```bash
     npm install @sap-devx/webview-rpc
@@ -27,7 +31,6 @@ Also, to use this library, you need to run it inside a VSCode extension using [V
 * Add the following script to the root html of your Webview
     ```html
     <head>
-        <script>var exports = {};</script>
         <script type="module" src="vscode-resource:/node_modules/@sap-devx/webview-rpc/out.browser/rpc-common.js"></script>
         <script type="module" src="vscode-resource:/node_modules/@sap-devx/webview-rpc/out.browser/rpc-browser.js"></script>
         <script type="module" src="vscode-resource:/out/media/main.js"></script>
@@ -45,7 +48,7 @@ Create new instance of the Rpc in the extension side and the Webview side
     let rpc = new RpcBrowser(window, vscode);
     ```
 ### Register methods
-In order to invoke an extension method from the webbiew or webview method from the extension, you will have to register the functions that can be invoked.
+In order to invoke an extension method from the Webview or Webview method from the extension, you will have to register the functions that can be invoked.
 Here is an example on how to register the methods
 ```js
 function add(a,b) {
@@ -55,18 +58,11 @@ function add(a,b) {
 rpc.registerMethod({func: add});
 ```
 ### Usage
-To invoke a method use the *invoke* method on the rpc instance. You can pass a callback that will be invoked once the response received.\
-***For version ^0.x.y*** :
+To invoke a method use the *invoke* method on the rpc instance. You can pass a callback that will be invoked once the response received.
+
 ```js
-rpc.invoke("add", [1,2]).then((response)=>{
-    console.log("1+2="+response);
-});
-```
-***Since version 1.x.y*** :
-```js
-rpc.invoke("add", 1,2).then((response)=>{
-    console.log("1+2="+response);
-});
+const response = await rpc.add(1, 2);
+console.log(`1+2=${response}`);
 ```
 
 ## Build and Development
@@ -92,7 +88,7 @@ To build for development purpose do the following:
 * Browser library is does not generate d.ts files.
 
 * overcome Cors issue preventing post message to get through and hit the window:
-use the setHost method and sent the host name from the webview - and then the message should get through.
+use the setHost method and sent the host name from the Webview - and then the message should get through.
 
 ## How to obtain support
 * To get more help, support and information please open a github issue.
