@@ -8,7 +8,7 @@
 # vscode-webview-rpc-lib
 
 ## Description
-This library provides a convenient asynchronous ([promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)-based) request-response wrapper to the unidirectional VS Code [message passing](https://code.visualstudio.com/api/extension-guides/webview#scripts-and-message-passing) mechanism, for communications between [extensions](https://code.visualstudio.com/api) and their [Webviews](https://code.visualstudio.com/api/extension-guides/webview).
+This library provides a convenient asynchronous ([Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)-based) request-response wrapper to the unidirectional VS Code [message passing](https://code.visualstudio.com/api/extension-guides/webview#scripts-and-message-passing) mechanism, for communications between [extensions](https://code.visualstudio.com/api) and their [Webviews](https://code.visualstudio.com/api/extension-guides/webview).
 
 This library also contains a [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) implementation for non-VS Code use-cases and for testing purposes. See the [WebSockets example](./example-websockets/) for more information.
 
@@ -51,18 +51,18 @@ Create new instance of the Rpc in the extension side and the Webview side
 In order to invoke an extension method from the Webview or Webview method from the extension, you will have to register the functions that can be invoked.
 Here is an example on how to register the methods
 ```js
-function add(a,b) {
-    return a+b;
+const add = (a, b) => {
+    return a + b;
 }
 
 rpc.registerMethod({func: add});
 ```
 ### Usage
-To invoke a method use the *invoke* method on the rpc instance. You can pass a callback that will be invoked once the response received.
+To invoke a remote method, call `remote.<name_of_remote_method>(param1, param2, ...)` on the rpc instance. The result of the method is Promise that, when resolved, contains the result of the invoked method.
 
 ```js
-const response = await rpc.add(1, 2);
-console.log(`1+2=${response}`);
+const response = await rpc.remote.add(1, 2);
+console.log(`1 + 2 = ${response}`); // expected to output: 1 + 2 = 3
 ```
 
 ## Build and Development
@@ -71,11 +71,11 @@ To build for development purpose do the following:
     ```bash
     npm install @sap-devx/webview-rpc
     ```
-* Run "*npm run compile-ext*" to compile the extension library sources to javascript. The compilation results will be on the directory "out.ext".
+* Run "*npm run compile-ext*" to compile the extension library sources to JavaScript. The compilation results will be on the directory "out.ext".
     ```bash
     npm run compile-ext
     ```
-* Run "*npm run compile-browser*" to compile the browser library sources to javascript. The compilation results will be on the directory "out.browser".
+* Run "*npm run compile-browser*" to compile the browser library sources to JavaScript. The compilation results will be on the directory "out.browser".
     ```bash
     npm run compile-browser
     ```
@@ -85,16 +85,17 @@ To build for development purpose do the following:
     ```
 
 ## Known Issues
-* Browser library is does not generate d.ts files.
+* The browser library does not generate d.ts files.
+* There is a CORS issue preventing post message to get through and hit the window. You can use this workaround:
 
-* overcome Cors issue preventing post message to get through and hit the window:
-use the setHost method and sent the host name from the Webview - and then the message should get through.
+  Use the `setHost()` method and send the host name from the Webview - then the message should get through.
 
 ## How to obtain support
 * To get more help, support and information please open a github issue.
+
 ## Contributing
 Contributing information can be found in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ## To-Do (upcoming changes)
-* remove the need to decalre exposed functions
+* Remove the need to register methods
 
