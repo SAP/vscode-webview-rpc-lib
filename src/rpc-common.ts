@@ -18,6 +18,27 @@ export interface IPromiseCallbacks {
   reject: Function;
 }
 
+/**
+ * Shape of a multi-plugin RPC message with plugin namespace.
+ * Used by RpcServerWebSocketsMulti and RpcBrowserWebSocketsMulti.
+ */
+export interface RpcMultiMessage {
+  /** Plugin namespace — routes the message to the correct handler */
+  plugin: string;
+  /** RPC command type */
+  command: "rpc-request" | "rpc-response";
+  /** Unique request identifier */
+  id: number;
+  /** Method name (present on requests) */
+  method?: string;
+  /** Method parameters (present on requests) */
+  params?: any[];
+  /** Return value (present on responses) */
+  response?: any;
+  /** Whether the response is successful (present on responses) */
+  success?: boolean;
+}
+
 export interface IMethod {
   func: Function;
   thisArg?: any;
