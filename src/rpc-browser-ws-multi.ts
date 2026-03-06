@@ -1,17 +1,14 @@
 /**
  * RpcBrowserWebSocketsMulti
  *
- * Browser-side RPC class for scenarios where multiple plugins share a single
+ * Browser-side RPC class for scenarios where multiple consumers share a single
  * WebSocket endpoint. This class adds:
  *
- * 1. **Plugin namespacing** — Messages include a `plugin` field; only messages
+ * 1. **Plugin (consumer) namespacing** — Messages include a `plugin` field; only messages
  *    for this plugin are processed
  * 2. **Auto-reconnect** — Automatically reconnects after disconnect
  * 3. **Message queueing** — Messages sent before connection is open are queued
  * 4. **Lifecycle management** — Explicit connect()/disconnect() methods
- *
- * Designed for architecture where MFE iframes connect to a shared `/ws`
- * endpoint and communicate with their own backend plugin.
  *
  * @example
  * ```ts
@@ -26,8 +23,7 @@
 // must specify ".js" for import in browser to locate rpc-common.js
 // see: https://github.com/microsoft/TypeScript/issues/16577#issuecomment-343610106
 import { RpcCommon, IPromiseCallbacks, RpcMultiMessage } from "./rpc-common.js";
-import { IChildLogger } from "@vscode-logging/types";
-import { noopLogger } from "./noop-logger.js";
+import { IChildLogger, noopLogger } from "./noop-logger.js";
 
 // Re-export RpcMultiMessage for consumers who import from this module
 export { RpcMultiMessage } from "./rpc-common.js";
@@ -108,7 +104,6 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
 
   /**
    * Open the WebSocket connection.
-   * Call this once when the MFE initializes.
    * Automatically reconnects on disconnect if autoReconnect is enabled.
    */
   connect(): void {
@@ -211,7 +206,7 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
   }
 
   /**
-   * Invoke a method on the backend plugin and return the result.
+   * Invoke a method on the backend plugin(consumer) and return the result.
    *
    * @param method The method name to invoke on the server side
    * @param params Parameters to pass

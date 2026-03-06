@@ -1,10 +1,10 @@
 /**
  * RpcServerWebSocketsMulti
  *
- * Server-side RPC class for scenarios where multiple plugins share a single
+ * Server-side RPC class for scenarios where multiple plugins (consumers) share a single
  * WebSocket endpoint. This class adds:
  *
- * 1. **Plugin namespacing** — Messages include a `plugin` field for routing
+ * 1. **Plugin (consumer) namespacing** — Messages include a `plugin` field for routing
  * 2. **Multi-connection management** — One RPC server handles N client connections
  * 3. **External message handling** — Messages are dispatched via `handleMessage()`
  *    rather than by listening directly on a WebSocket
@@ -23,9 +23,8 @@
  * ```
  */
 
-import { RpcCommon, IMethod, IPromiseCallbacks, RpcMultiMessage } from "./rpc-common";
-import { IChildLogger } from "@vscode-logging/types";
-import { noopLogger } from "./noop-logger";
+import { RpcCommon, IMethod, RpcMultiMessage } from "./rpc-common";
+import { IChildLogger, noopLogger } from "./noop-logger";
 
 // Re-export RpcMultiMessage for consumers who import from this module
 export { RpcMultiMessage } from "./rpc-common";
@@ -169,105 +168,6 @@ export class RpcServerWebSocketsMulti extends RpcCommon {
   }
 
   /**
-   * Send a message to all connected clients (broadcast).
-   */
-  private broadcast(message: RpcMultiMessage): void {
-    const data = JSON.stringify(message);
-    for (const [connectionId, sendFn] of this.connections.entries()) {
-      try {
-        sendFn(data);
-      } catch (err) {
-        this.logger.error(`broadcast: Failed to send to ${connectionId}`, { error: err });
-      }
-    }
-  }
-
-  /**
-   * Invoke a method on all connected clients.
-   *
-   * Note: This broadcasts to all clients. The response from the first
-   * client to respond is used. For targeted invocation, use `invokeTo()`.
-   *
-   * @param method The method name to invoke on the browser side
-   * @param params Parameters to pass
-   * @returns A promise that resolves with the result from the client
-   */
-  invoke(method: string, ...params: any[]): Promise<any> {
-    const id = Math.random();
-    const promise = new Promise((resolve, reject) => {
-      this.promiseCallbacks.set(id, { resolve, reject });
-    });
-
-    // Set timeout
-    setTimeout(() => {
-      const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
-      if (promiseCallbacks) {
-        this.logger.warn(`invoke: Request ${id} method ${method} has timed out`);
-        promiseCallbacks.reject(new Error(`Request timed out: ${method}`));
-        this.promiseCallbacks.delete(id);
-      }
-    }, this.timeout);
-
-    const requestObject: RpcMultiMessage = {
-      plugin: this.pluginName,
-      command: "rpc-request",
-      id: id,
-      method: method,
-      params: params,
-    };
-
-    this.broadcast(requestObject);
-    return promise;
-  }
-
-  /**
-   * Invoke a method on a specific connected client.
-   *
-   * @param connectionId The target connection
-   * @param method The method name to invoke
-   * @param params Parameters to pass
-   * @returns A promise that resolves with the result from the client
-   */
-  invokeTo(connectionId: string, method: string, ...params: any[]): Promise<any> {
-    const sendFn = this.connections.get(connectionId);
-    if (!sendFn) {
-      return Promise.reject(new Error(`Connection not found: ${connectionId}`));
-    }
-
-    const id = Math.random();
-    const promise = new Promise((resolve, reject) => {
-      this.promiseCallbacks.set(id, { resolve, reject });
-    });
-
-    // Set timeout
-    setTimeout(() => {
-      const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
-      if (promiseCallbacks) {
-        this.logger.warn(`invokeTo: Request ${id} method ${method} has timed out`);
-        promiseCallbacks.reject(new Error(`Request timed out: ${method}`));
-        this.promiseCallbacks.delete(id);
-      }
-    }, this.timeout);
-
-    const requestObject: RpcMultiMessage = {
-      plugin: this.pluginName,
-      command: "rpc-request",
-      id: id,
-      method: method,
-      params: params,
-    };
-
-    try {
-      sendFn(JSON.stringify(requestObject));
-    } catch (err) {
-      this.promiseCallbacks.delete(id);
-      return Promise.reject(err);
-    }
-
-    return promise;
-  }
-
-  /**
    * Get a registered method by name.
    * This allows external code (like Build Studio core) to access methods
    * for inter-plugin communication without going through WebSocket.
@@ -294,9 +194,9 @@ export class RpcServerWebSocketsMulti extends RpcCommon {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   sendRequest(id: number, method: string, params?: any[]): void {
-    // Not used — we use invoke() which broadcasts to all connections
+    // Not used — this class only handles incoming requests from clients
     // This is required by the abstract base class
-    this.logger.warn("sendRequest called directly — use invoke() instead");
+    this.logger.warn("sendRequest called directly — not supported in multi-connection mode");
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
