@@ -12,6 +12,12 @@
  * Designed for architecture where the core WebSocket handler
  * routes messages to plugin-specific RPC servers based on the `plugin` field.
  *
+ * **Cross-plugin invocation:** The browser-side counterpart (`RpcBrowserWebSocketsMulti`)
+ * supports `"targetPlugin:methodName"` syntax to invoke methods on a different plugin's
+ * backend. On the server side, the core WebSocket router already handles routing the
+ * incoming message to the correct `RpcServerWebSocketsMulti` instance based on the
+ * `plugin` field — no changes are needed here.
+ *
  * @example
  * ```ts
  * const rpc = new RpcServerWebSocketsMulti('my-plugin', logger);

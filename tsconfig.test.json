@@ -9,5 +9,5 @@
 		"strict": true
 	},
 	"exclude": ["node_modules", "example", "example-ws"],
-	"include": ["src/rpc-common.ts", "src/test/*.ts"]
+	"include": ["src/rpc-common.ts", "src/noop-logger.ts", "src/rpc-server-ws-multi.ts", "src/test/rpc-mock.ts", "src/test/rpc.test.ts", "src/test/logger.spec.ts"]
 }
