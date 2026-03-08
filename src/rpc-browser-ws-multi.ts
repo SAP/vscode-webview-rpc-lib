@@ -6,9 +6,11 @@
  *
  * 1. **Plugin (consumer) namespacing** — Messages include a `plugin` field; only messages
  *    for this plugin are processed
- * 2. **Auto-reconnect** — Automatically reconnects after disconnect
- * 3. **Message queueing** — Messages sent before connection is open are queued
- * 4. **Lifecycle management** — Explicit connect()/disconnect() methods
+ * 2. **Cross-plugin invocation** — Use `"targetPlugin:methodName"` syntax to call methods
+ *    on a different plugin's backend
+ * 3. **Auto-reconnect** — Automatically reconnects after disconnect
+ * 4. **Message queueing** — Messages sent before connection is open are queued
+ * 5. **Lifecycle management** — Explicit connect()/disconnect() methods
  *
  * @example
  * ```ts
@@ -16,7 +18,11 @@
  * rpc.registerMethod({ func: handleNotification, name: 'notify' });
  * rpc.connect();
  *
+ * // Call own backend
  * const data = await rpc.invoke('getData', arg1, arg2);
+ *
+ * // Call another plugin's backend
+ * const file = await rpc.invoke('filesystem:readFile', '/path/to/file');
  * ```
  */
 
@@ -103,6 +109,27 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
   }
 
   /**
+   * Parse a method string that may contain a plugin prefix.
+   *
+   * Supports two forms:
+   * - `"methodName"` — routes to this plugin's backend (uses `this.pluginName`)
+   * - `"targetPlugin:methodName"` — routes to a different plugin's backend
+   *
+   * A colon at position 0 (e.g. `":foo"`) is not treated as a separator;
+   * the entire string is used as the method name with `this.pluginName`.
+   */
+  private parseMethod(method: string): { plugin: string; method: string } {
+    const colonIndex = method.indexOf(":");
+    if (colonIndex > 0) {
+      return {
+        plugin: method.substring(0, colonIndex),
+        method: method.substring(colonIndex + 1),
+      };
+    }
+    return { plugin: this.pluginName, method };
+  }
+
+  /**
    * Open the WebSocket connection.
    * Automatically reconnects on disconnect if autoReconnect is enabled.
    */
@@ -130,18 +157,21 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
       try {
         const message: RpcMultiMessage = JSON.parse(event.data as string);
 
-        // Only handle messages for this plugin
-        if (message.plugin !== this.pluginName) {
-          return;
-        }
-
-        this.logger.debug(`Received: ${JSON.stringify(message)}`);
-
         switch (message.command) {
           case "rpc-request":
+            // Only handle requests addressed to this plugin
+            if (message.plugin !== this.pluginName) {
+              return;
+            }
+            this.logger.debug(`Received request: ${JSON.stringify(message)}`);
             this.handleRequest(message);
             break;
           case "rpc-response":
+            // Match responses by request id (supports cross-plugin responses)
+            if (!this.promiseCallbacks.has(message.id)) {
+              return;
+            }
+            this.logger.debug(`Received response: ${JSON.stringify(message)}`);
             this.handleResponse(message);
             break;
         }
@@ -206,13 +236,19 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
   }
 
   /**
-   * Invoke a method on the backend plugin(consumer) and return the result.
+   * Invoke a method on a backend plugin and return the result.
    *
-   * @param method The method name to invoke on the server side
+   * Supports two calling conventions:
+   * - `invoke("methodName", ...params)` — calls a method on this plugin's own backend
+   * - `invoke("targetPlugin:methodName", ...params)` — calls a method on a different
+   *   plugin's backend (cross-plugin invocation)
+   *
+   * @param method The method name, or `"targetPlugin:methodName"` for cross-plugin calls
    * @param params Parameters to pass
    * @returns A promise that resolves with the result from the backend
    */
   invoke(method: string, ...params: any[]): Promise<any> {
+    const parsed = this.parseMethod(method);
     const id = Math.random();
     const promise = new Promise((resolve, reject) => {
       this.promiseCallbacks.set(id, { resolve, reject });
@@ -229,10 +265,10 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
     }, this.timeout);
 
     const requestObject: RpcMultiMessage = {
-      plugin: this.pluginName,
+      plugin: parsed.plugin,
       command: "rpc-request",
       id: id,
-      method: method,
+      method: parsed.method,
       params: params,
     };
 
@@ -245,6 +281,8 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
   // -------------------------------------------------------------------------
 
   sendRequest(id: number, method: string, params?: any[]): void {
+    const parsed = this.parseMethod(method);
+
     // Set timeout
     setTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
@@ -256,10 +294,10 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
     }, this.timeout);
 
     const requestBody: RpcMultiMessage = {
-      plugin: this.pluginName,
+      plugin: parsed.plugin,
       command: "rpc-request",
       id: id,
-      method: method,
+      method: parsed.method,
       params: params,
     };
 
