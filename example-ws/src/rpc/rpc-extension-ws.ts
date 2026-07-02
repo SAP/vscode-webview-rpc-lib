@@ -1,5 +1,5 @@
 import { RpcCommon, IPromiseCallbacks } from "./rpc-common";
-import * as WebSocket from "ws";
+import WebSocket from "ws";
 
 export class RpcExtensionWebSockets extends RpcCommon {
   ws: WebSocket;

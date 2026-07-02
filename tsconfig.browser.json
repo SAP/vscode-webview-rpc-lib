@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
-		"moduleResolution": "node",
+		"module": "es6",
+		"moduleResolution": "bundler",
 		"target": "es6",
 		"outDir": "out.browser",
 		"lib": ["es6", "dom"],
