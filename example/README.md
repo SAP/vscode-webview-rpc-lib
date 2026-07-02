@@ -1,65 +1,63 @@
-# rpc-example README
+# VS Code Webview RPC Example
 
-This is the README for your extension "rpc-example". After writing up a brief description, we recommend including the following sections.
+This example shows `@sap-devx/webview-rpc` communication between a VS Code extension host and a webview.
 
-## Features
+## What It Demonstrates
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- Creating an `RpcExtension` instance in the extension host.
+- Creating an `RpcBrowser` instance in the webview.
+- Registering callable methods on both sides.
+- Invoking a webview method from the extension command.
+- Invoking an extension method from a webview button click.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- Node.js 20 or newer.
+- VS Code 1.100 or newer.
+- The repository root package built locally, because this example depends on `@sap-devx/webview-rpc` via `file:..`.
 
-## Extension Settings
+## Setup
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+From the repository root:
 
-For example:
+```bash
+npm ci
+npm run compile
+```
 
-This extension contributes the following settings:
+Then install this example's dependencies:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+```bash
+cd example
+npm ci
+```
 
-## Known Issues
+## Build
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Compile the extension example:
 
-## Release Notes
+```bash
+npm run compile
+```
 
-Users appreciate release notes as you update your extension.
+If you update webview assets under `src/media`, copy them to `out/media`:
 
-### 1.0.0
+```bash
+npm run copy
+```
 
-Initial release of ...
+## Run
 
-### 1.0.1
+Open this repository in VS Code and launch the example extension from `example/.vscode/launch.json`.
 
-Fixed issue #.
+Use the contributed commands:
 
-### 1.1.0
+- `Open Webview` opens the RPC webview panel.
+- `Send Message to Webview` invokes a registered webview method from the extension side.
 
-Added features X, Y, and Z.
+Inside the webview, use the `Run` button to invoke the extension-side `showMessage` method.
 
------------------------------------------------------------------------------------------------------------
+## Notes
 
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- The webview HTML uses a `vscode-scheme` placeholder that `src/extension.ts` replaces with `webview.asWebviewUri(...)` output at runtime.
+- This example is not published with the npm package; it is only for local development and validation.
