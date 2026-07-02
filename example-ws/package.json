@@ -3,25 +3,33 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "watch": "tsc -w -p .",
     "prep": "cd .. && npm run compile && copyfiles -u 1 ./out.browser/*.js ./example-ws/src/static/rpc/ && copyfiles -u 1 ./src/rpc-common.ts ./example-ws/src/rpc/ && copyfiles -u 1 ./src/rpc-extension-ws.ts ./example-ws/src/rpc/",
     "compile": "rimraf out && tsc -p . && copyfiles -u 1 ./src/static/** ./out/",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint ./**/*.ts"
+    "lint": "eslint \"src/**/*.ts\""
   },
   "author": "Eyal Barlev",
   "publisher": "SAP",
   "license": "Apache 2.0",
   "devDependencies": {
-    "@types/ws": "^7.2.3",
-    "copyfiles": "^2.4.1",
-    "eslint": "^8.56.0",
-    "rimraf": "^5.0.5",
-    "typescript": "^4.2.3"
+    "@eslint/js": "9.39.4",
+    "@types/node": "22.20.0",
+    "@types/ws": "8.18.1",
+    "@typescript-eslint/eslint-plugin": "8.62.0",
+    "@typescript-eslint/parser": "8.62.0",
+    "copyfiles": "2.4.1",
+    "eslint": "9.39.4",
+    "globals": "14.0.0",
+    "rimraf": "6.1.3",
+    "typescript": "5.9.3"
   },
   "dependencies": {
-    "ws": "^7.2.3",
-    "@braintree/sanitize-url": "7.0.1"
+    "@braintree/sanitize-url": "7.1.2",
+    "ws": "8.21.0"
   }
 }

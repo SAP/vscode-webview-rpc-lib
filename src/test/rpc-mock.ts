@@ -18,13 +18,13 @@ export class RpcMock extends RpcCommon {
 
   sendRequest(id: number, method: string, params?: any[]) {
     // TODO: consider cancelling the timer if the promise if fulfilled before timeout is reached
-    setTimeout(() => {
+    this.scheduleResponseTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
         promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
       }
-    }, this.timeout);
+    });
 
     // TODO: find an alternative to appending vscode to the global scope (perhaps providing vscode as parameter to constructor)
     const requestBody: any = {

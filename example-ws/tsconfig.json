@@ -1,12 +1,14 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
+		"moduleResolution": "node",
 		"target": "es6",
 		"outDir": "out",
 		"lib": ["es6"],
 		"sourceMap": true,	
 		"rootDir": "src",
-		"strict": true
+		"strict": true,
+		"forceConsistentCasingInFileNames": true
 	},
 	"include": ["src/**/*.ts"],
 	"exclude": ["node_modules"]

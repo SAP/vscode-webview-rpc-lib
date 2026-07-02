@@ -3,7 +3,7 @@
 
 import { RpcCommon, IPromiseCallbacks } from "./rpc-common.js";
 import { IChildLogger } from "@vscode-logging/types";
-import { noopLogger } from "./noop-logger";
+import { noopLogger } from "./noop-logger.js";
 
 export class RpcBrowserWebSockets extends RpcCommon {
   private static readonly className = "RpcBrowserWebSockets";
@@ -30,14 +30,14 @@ export class RpcBrowserWebSockets extends RpcCommon {
 
   sendRequest(id: number, method: string, params?: any[]) {
     // TODO: consider cancelling the timer if the promise if fulfilled before timeout is reached
-    setTimeout(() => {
+    this.scheduleResponseTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
         this.logger.warn(`sendRequest: Request ${id} method ${method} has timed out`);
         promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
       }
-    }, this.timeout);
+    });
 
     // TODO: find an alternative to appending vscode to the global scope (perhaps providing vscode as parameter to constructor)
     const requestBody: any = {

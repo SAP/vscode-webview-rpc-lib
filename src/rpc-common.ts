@@ -48,11 +48,12 @@ export interface IMethod {
 export abstract class RpcCommon implements IRpc {
   abstract sendRequest(id: number, method: string, params?: any[]): void;
   abstract sendResponse(id: number, response: any, success?: boolean): void;
-  protected promiseCallbacks: Map<number, IPromiseCallbacks>; // promise resolve and reject callbacks that are called when returning from remote
+  protected promiseCallbacks: Map<number, IPromiseCallbacks>;
   protected methods: Map<string, IMethod>;
   private readonly baseLogger: IChildLogger;
   // TODO: timeouts do not make sense for user interactions. consider not using timeouts by default
   protected timeout: number = 3600000; // timeout for response from remote in milliseconds
+  protected nextId: number = 0;
 
   constructor(logger: IChildLogger) {
     this.promiseCallbacks = new Map();
@@ -81,9 +82,15 @@ export abstract class RpcCommon implements IRpc {
     return this.invoke("listLocalMethods");
   }
 
+  protected scheduleResponseTimeout(callback: () => void): void {
+    const timer = setTimeout(callback, this.timeout);
+    if (typeof timer === "object" && typeof timer.unref === "function") {
+      timer.unref();
+    }
+  }
+
   invoke(method: string, ...params: any[]): Promise<any> {
-  // TODO: change to something more unique (or check to see if id doesn't already exist in this.promiseCallbacks)
-    const id = Math.random();
+    const id = ++this.nextId;
     const promise = new Promise((resolve, reject) => {
       this.promiseCallbacks.set(id, { resolve: resolve, reject: reject });
     });

@@ -53,6 +53,13 @@ export abstract class RpcCommon implements IRpc {
     return this.invoke("listLocalMethods");
   }
 
+  protected scheduleResponseTimeout(callback: () => void): void {
+    const timer = setTimeout(callback, this.timeout);
+    if (typeof timer === "object" && typeof timer.unref === "function") {
+      timer.unref();
+    }
+  }
+
   invoke(method: string, ...params: any[]): Promise<any> {
   // TODO: change to something more unique (or check to see if id doesn't alreday exist in this.promiseCallbacks)
     const id = Math.random();

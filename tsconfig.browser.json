@@ -7,6 +7,7 @@
 		"sourceMap": true,
 		"rootDir": "src",
 		"strict": true,
+		"forceConsistentCasingInFileNames": true,
 		"declaration": true
 	},
 	"exclude": ["node_modules", "src/rpc-extension.ts", "src/rpc-extension-ws.ts", "src/rpc-server-ws-multi.ts", "example", "example-ws"]
