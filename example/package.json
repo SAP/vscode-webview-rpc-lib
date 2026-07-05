@@ -38,6 +38,7 @@
 		"@types/glob": "^7.1.1",
 		"@types/node": "^18.11.1",
 		"@types/vscode": "^1.44.0",
+		"@vscode-logging/types": "^2.0.0",
 		"copyfiles": "^2.4.1",
 		"glob": "^7.1.6",
 		"mocha": "^10.4.0",
