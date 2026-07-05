@@ -7,8 +7,6 @@ import { noopLogger } from "../noop-logger";
 // WebSocket mock for RpcBrowserWebSocketsMulti
 // ---------------------------------------------------------------------------
 
-type WsListener = (event: { data: string }) => void;
-
 class MockWebSocket {
   static instances: MockWebSocket[] = [];
 
