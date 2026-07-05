@@ -7,9 +7,9 @@ export class RpcExtensionWebSockets extends RpcCommon {
   constructor(ws: WebSocket) {
     super();
     this.ws = ws;
-    this.ws.on("message", message => {
-      // assuming message is a stringified JSON
-      const messageObject: any = JSON.parse(message as string);
+    this.ws.on("message", (message) => {
+      const raw = message.toString();
+      const messageObject: any = JSON.parse(raw);
       switch (messageObject.command) {
       case "rpc-response":
         this.handleResponse(messageObject);
