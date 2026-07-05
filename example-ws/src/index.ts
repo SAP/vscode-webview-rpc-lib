@@ -1,6 +1,6 @@
 import * as http from "http";
 import * as fs from "fs";
-import * as WebSocket from "ws";
+import WebSocket from "ws";
 import { IRpc } from "./rpc/rpc-common";
 import { RpcExtensionWebSockets } from "./rpc/rpc-extension-ws";
 import { sanitizeUrl } from "@braintree/sanitize-url";
