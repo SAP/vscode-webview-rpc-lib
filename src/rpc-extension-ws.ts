@@ -1,5 +1,5 @@
 import { RpcCommon, IPromiseCallbacks } from "./rpc-common";
-import * as WebSocket from "ws";
+import WebSocket from "ws";
 import { IChildLogger } from "@vscode-logging/types";
 import { noopLogger } from "./noop-logger";
 

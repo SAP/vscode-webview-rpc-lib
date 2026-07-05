@@ -32,7 +32,7 @@ import { RpcCommon, IPromiseCallbacks, RpcMultiMessage } from "./rpc-common.js";
 import { IChildLogger, noopLogger } from "./noop-logger.js";
 
 // Re-export RpcMultiMessage for consumers who import from this module
-export { RpcMultiMessage } from "./rpc-common.js";
+export type { RpcMultiMessage } from "./rpc-common.js";
 
 export class RpcBrowserWebSocketsMulti extends RpcCommon {
   private static readonly className = "RpcBrowserWebSocketsMulti";

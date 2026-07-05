@@ -1,12 +1,14 @@
 {
 	"compilerOptions": {
-		"moduleResolution": "node",
+		"module": "es6",
+		"moduleResolution": "bundler",
 		"target": "es6",
 		"outDir": "out.browser",
 		"lib": ["es6", "dom"],
 		"sourceMap": true,
 		"rootDir": "src",
 		"strict": true,
+		"forceConsistentCasingInFileNames": true,
 		"declaration": true
 	},
 	"exclude": ["node_modules", "src/rpc-extension.ts", "src/rpc-extension-ws.ts", "src/rpc-server-ws-multi.ts", "example", "example-ws"]

@@ -1,5 +1,5 @@
 import { RpcCommon, IPromiseCallbacks } from "./rpc-common";
-import * as WebSocket from "ws";
+import WebSocket from "ws";
 
 export class RpcExtensionWebSockets extends RpcCommon {
   ws: WebSocket;
@@ -7,9 +7,9 @@ export class RpcExtensionWebSockets extends RpcCommon {
   constructor(ws: WebSocket) {
     super();
     this.ws = ws;
-    this.ws.on("message", message => {
-      // assuming message is a stringified JSON
-      const messageObject: any = JSON.parse(message as string);
+    this.ws.on("message", (message) => {
+      const raw = message.toString();
+      const messageObject: any = JSON.parse(raw);
       switch (messageObject.command) {
       case "rpc-response":
         this.handleResponse(messageObject);
@@ -23,13 +23,13 @@ export class RpcExtensionWebSockets extends RpcCommon {
 
   sendRequest(id: number, method: string, params?: any[]) {
     // consider cancelling the timer if the promise if fulfilled before timeout is reached
-    setTimeout(() => {
+    this.scheduleResponseTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
         promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
       }
-    }, this.timeout);
+    });
 
     const requestObject: any = {
       command: "rpc-request",

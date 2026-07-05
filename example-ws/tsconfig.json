@@ -1,12 +1,16 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
+		"module": "Node16",
+		"moduleResolution": "node16",
 		"target": "es6",
 		"outDir": "out",
 		"lib": ["es6"],
 		"sourceMap": true,	
 		"rootDir": "src",
-		"strict": true
+		"strict": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true
 	},
 	"include": ["src/**/*.ts"],
 	"exclude": ["node_modules"]
