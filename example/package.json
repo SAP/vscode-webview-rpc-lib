@@ -47,6 +47,6 @@
 		"vscode-test": "^1.6.1"
 	},
 	"dependencies": {
-		"@sap-devx/webview-rpc": "file:.."
+		"@sap-devx/webview-rpc": "file:../sap-devx-webview-rpc-1.1.0.tgz"
 	}
 }
