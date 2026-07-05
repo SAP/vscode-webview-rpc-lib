@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "watch": "tsc -w -p .",
     "prep": "cd .. && npm run compile && copyfiles -u 1 ./out.browser/*.js ./example-ws/src/static/rpc/ && copyfiles -u 1 ./src/rpc-common.ts ./example-ws/src/rpc/ && copyfiles -u 1 ./src/rpc-extension-ws.ts ./example-ws/src/rpc/",

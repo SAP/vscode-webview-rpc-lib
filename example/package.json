@@ -4,6 +4,7 @@
 	"description": "",
 	"version": "0.0.1",
 	"engines": {
+		"node": ">=24",
 		"vscode": "^1.38.0"
 	},
 	"categories": [
