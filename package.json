@@ -9,6 +9,9 @@
   "license": "Apache 2.0",
   "author": "Ido Perez",
   "publisher": "SAP",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "ci": "npm run compile && npm run lint && npm run test && npm pack",
     "clean": "rimraf ./out.*",

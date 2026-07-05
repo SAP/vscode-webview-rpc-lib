@@ -10,18 +10,19 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    ignore:
-    - dependency-name: actions/checkout
 
   # Maintain dependencies for npm
   - package-ecosystem: npm
     directory: "/"
     schedule:
       interval: weekly
-    ignore:
-    - dependency-name: "ws"
-    - dependency-name: "@types/node"
-    - dependency-name: "@types/vscode"
-    - dependency-name: "@types/ws"
-    - dependency-name: "typescript"
-      versions: ["5.x"]
+
+  - package-ecosystem: npm
+    directory: "/example"
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: npm
+    directory: "/example-ws"
+    schedule:
+      interval: weekly
