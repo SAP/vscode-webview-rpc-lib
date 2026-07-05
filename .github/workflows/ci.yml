@@ -31,3 +31,23 @@ jobs:
 
       - name: Build
         run: npm run ci
+
+      - name: Install example dependencies
+        run: npm ci
+        working-directory: example
+
+      - name: Build example
+        run: npm run compile
+        working-directory: example
+
+      - name: Install WebSocket example dependencies
+        run: npm ci
+        working-directory: example-ws
+
+      - name: Build WebSocket example
+        run: npm run compile
+        working-directory: example-ws
+
+      - name: Lint WebSocket example
+        run: npm run lint
+        working-directory: example-ws
