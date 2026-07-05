@@ -255,14 +255,14 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
     });
 
     // Set timeout
-    setTimeout(() => {
+    this.scheduleResponseTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
         this.logger.warn(`invoke: Request ${id} method ${method} has timed out`);
         promiseCallbacks.reject(new Error(`Request timed out: ${method}`));
         this.promiseCallbacks.delete(id);
       }
-    }, this.timeout);
+    });
 
     const requestObject: RpcMultiMessage = {
       plugin: parsed.plugin,
@@ -284,14 +284,14 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
     const parsed = this.parseMethod(method);
 
     // Set timeout
-    setTimeout(() => {
+    this.scheduleResponseTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
         this.logger.warn(`sendRequest: Request ${id} method ${method} has timed out`);
         promiseCallbacks.reject(new Error("Request timed out"));
         this.promiseCallbacks.delete(id);
       }
-    }, this.timeout);
+    });
 
     const requestBody: RpcMultiMessage = {
       plugin: parsed.plugin,
