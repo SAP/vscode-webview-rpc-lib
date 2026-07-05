@@ -249,7 +249,7 @@ export class RpcBrowserWebSocketsMulti extends RpcCommon {
    */
   invoke(method: string, ...params: any[]): Promise<any> {
     const parsed = this.parseMethod(method);
-    const id = Math.random();
+    const id = ++this.nextId;
     const promise = new Promise((resolve, reject) => {
       this.promiseCallbacks.set(id, { resolve, reject });
     });
