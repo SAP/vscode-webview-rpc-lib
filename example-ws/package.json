@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": ">=24"
+    "node": ">=22"
   },
   "scripts": {
     "watch": "tsc -w -p .",
