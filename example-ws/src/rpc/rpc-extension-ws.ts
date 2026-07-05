@@ -23,13 +23,13 @@ export class RpcExtensionWebSockets extends RpcCommon {
 
   sendRequest(id: number, method: string, params?: any[]) {
     // consider cancelling the timer if the promise if fulfilled before timeout is reached
-    this.scheduleResponseTimeout(() => {
+    setTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
         promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
       }
-    });
+    }, this.timeout);
 
     const requestObject: any = {
       command: "rpc-request",

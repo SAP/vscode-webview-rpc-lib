@@ -5,7 +5,7 @@
 	"version": "0.0.1",
 	"engines": {
 		"node": ">=24",
-		"vscode": "^1.38.0"
+		"vscode": "^1.100.0"
 	},
 	"categories": [
 		"Other"
@@ -31,21 +31,16 @@
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
-		"copy": "rimraf ./out/media && copyfiles -u 1 ./src/media/** ./out/",
-		"pretest": "npm run compile"
+		"copy": "rimraf ./out/media && copyfiles -u 1 ./src/media/** ./out/"
 	},
 	"devDependencies": {
-		"@types/glob": "^7.1.1",
-		"@types/node": "^18.11.1",
-		"@types/vscode": "^1.44.0",
-		"copyfiles": "^2.4.1",
-		"glob": "^7.1.6",
-		"mocha": "^10.4.0",
-		"rimraf": "^5.0.5",
-		"typescript": "^4.2.3",
-		"vscode-test": "^1.6.1"
+		"@types/node": "24.13.2",
+		"@types/vscode": "1.100.0",
+		"copyfiles": "2.4.1",
+		"rimraf": "6.1.3",
+		"typescript": "5.9.3"
 	},
 	"dependencies": {
-		"@sap-devx/webview-rpc": "1.0.0"
+		"@sap-devx/webview-rpc": "file:.."
 	}
 }
