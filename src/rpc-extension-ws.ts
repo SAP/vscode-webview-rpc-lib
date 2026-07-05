@@ -12,10 +12,10 @@ export class RpcExtensionWebSockets extends RpcCommon {
     super(logger.getChildLogger({ label: RpcExtensionWebSockets.className }));
     this.logger = logger.getChildLogger({ label: RpcExtensionWebSockets.className });
     this.ws = ws;
-    this.ws.on("message", message => {
-      // assuming message is a stringified JSON
-      const messageObject: any = JSON.parse(message as string);
-      this.logger.debug(`Event Listener: Received event: ${message as string}`);
+    this.ws.on("message", (message) => {
+      const raw = message.toString();
+      const messageObject: any = JSON.parse(raw);
+      this.logger.debug(`Event Listener: Received event: ${raw}`);
       switch (messageObject.command) {
       case "rpc-response":
         this.handleResponse(messageObject);
