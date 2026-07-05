@@ -20,6 +20,7 @@ class MockWebSocket {
   onSend?: (data: string) => void;
 
   constructor(_url: string) {
+    void _url;
     MockWebSocket.instances.push(this);
     // Auto-fire "open" on next tick
     setTimeout(() => this.fireEvent("open", {}), 0);
