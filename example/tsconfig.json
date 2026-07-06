@@ -1,13 +1,15 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
+		"module": "Node16",
+		"moduleResolution": "node16",
 		"target": "es6",
 		"outDir": "out",
 		"lib": [
 			"es6"
 		],
 		"sourceMap": true,
-		"rootDir": "src"
+		"rootDir": "src",
+		"forceConsistentCasingInFileNames": true
 	},
 	"exclude": [
 		"node_modules",

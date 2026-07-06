@@ -1,5 +1,5 @@
 import { RpcCommon, IPromiseCallbacks } from "./rpc-common";
-import * as WebSocket from "ws";
+import WebSocket from "ws";
 import { IChildLogger } from "@vscode-logging/types";
 import { noopLogger } from "./noop-logger";
 
@@ -12,10 +12,10 @@ export class RpcExtensionWebSockets extends RpcCommon {
     super(logger.getChildLogger({ label: RpcExtensionWebSockets.className }));
     this.logger = logger.getChildLogger({ label: RpcExtensionWebSockets.className });
     this.ws = ws;
-    this.ws.on("message", message => {
-      // assuming message is a stringified JSON
-      const messageObject: any = JSON.parse(message as string);
-      this.logger.debug(`Event Listener: Received event: ${message as string}`);
+    this.ws.on("message", (message) => {
+      const raw = message.toString();
+      const messageObject: any = JSON.parse(raw);
+      this.logger.debug(`Event Listener: Received event: ${raw}`);
       switch (messageObject.command) {
       case "rpc-response":
         this.handleResponse(messageObject);
@@ -29,14 +29,14 @@ export class RpcExtensionWebSockets extends RpcCommon {
 
   sendRequest(id: number, method: string, params?: any[]) {
     // consider cancelling the timer if the promise if fulfilled before timeout is reached
-    setTimeout(() => {
+    this.scheduleResponseTimeout(() => {
       const promiseCallbacks: IPromiseCallbacks | undefined = this.promiseCallbacks.get(id);
       if (promiseCallbacks) {
         this.logger.warn(`sendRequest: Request ${id} method ${method} has timed out`);
         promiseCallbacks.reject("Request timed out");
         this.promiseCallbacks.delete(id);
       }
-    }, this.timeout);
+    });
 
     const requestObject: any = {
       command: "rpc-request",

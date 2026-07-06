@@ -33,7 +33,7 @@ import { RpcCommon, IMethod, RpcMultiMessage } from "./rpc-common";
 import { IChildLogger, noopLogger } from "./noop-logger";
 
 // Re-export RpcMultiMessage for consumers who import from this module
-export { RpcMultiMessage } from "./rpc-common";
+export type { RpcMultiMessage } from "./rpc-common";
 
 export class RpcServerWebSocketsMulti extends RpcCommon {
   private static readonly className = "RpcServerWebSocketsMulti";
