@@ -1,5 +1,4 @@
-[![CircleCI](https://circleci.com/gh/SAP/vscode-webview-rpc-lib.svg?style=svg)](https://circleci.com/gh/SAP/vscode-webview-rpc-lib)
-[![Coverage Status](https://coveralls.io/repos/github/SAP/vscode-webview-rpc-lib/badge.svg?branch=master)](https://coveralls.io/github/SAP/vscode-webview-rpc-lib?branch=master)
+[![CI](https://github.com/SAP/vscode-webview-rpc-lib/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/SAP/vscode-webview-rpc-lib/actions/workflows/ci.yml)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 ![GitHub license](https://img.shields.io/badge/license-Apache_2.0-blue.svg)
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/vscode-webview-rpc-lib)](https://api.reuse.software/info/github.com/SAP/vscode-webview-rpc-lib)
@@ -73,7 +72,7 @@ rpc.invoke("add", 1,2).then((response)=>{
 To build for development purpose do the following:
 * Run "*npm install*" on the repo to download the project dependencies.
     ```bash
-    npm install @sap-devx/webview-rpc
+    npm install
     ```
 * Run "*npm run compile-ext*" to compile the extension library sources to javascript. The compilation results will be on the directory "out.ext".
     ```bash
