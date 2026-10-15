@@ -1,3 +1,6 @@
+> [!WARNING]
+> **This repository has moved to [SAP/app-studio-toolkit/projects/vscode-webview-rpc-lib](https://github.com/SAP/app-studio-toolkit/tree/main/projects/vscode-webview-rpc-lib).**
+
 [![CircleCI](https://circleci.com/gh/SAP/vscode-webview-rpc-lib.svg?style=svg)](https://circleci.com/gh/SAP/vscode-webview-rpc-lib)
 [![Coverage Status](https://coveralls.io/repos/github/SAP/vscode-webview-rpc-lib/badge.svg?branch=master)](https://coveralls.io/github/SAP/vscode-webview-rpc-lib?branch=master)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
